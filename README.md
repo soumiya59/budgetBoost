@@ -12,5 +12,8 @@
 7. `npm install`
 
 ## Development
-- `cd backend && php artisan serve` for running Laravel app
+- `cd backend && php artisan migrate`
+- `php artisan db:seed --class=CategorySeeder`
+- `php artisan db:seed`
+- `php artisan serve`
 - in another terminal `cd frontend && npm run dev` to run React app (if not working then --force)
