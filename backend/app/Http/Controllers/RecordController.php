@@ -26,6 +26,21 @@ class RecordController extends Controller
         $records = $account->records()->get();
         return response()->json(['records' => $records], 200);
     }
+    
+    public function search(request $request){
+        $searchTerm = $request->filled('query') ? $request->input('query') : null;
+        $user = Auth::user();
+        $query = $user->records::query();
+        if ($searchTerm) {
+            $query->where('amount', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('type', 'LIKE', "%$searchTerm%")
+                    ->orWhere('currency', 'LIKE', "%$searchTerm%")
+                    ->orWhere('category', 'LIKE', "%$searchTerm%")
+                    ->orWhere('description', 'LIKE', "%$searchTerm%")
+                    ->get();
+        };
+        return response()->json(['records' => $query], 200);
+    }
 
     public function store(Request $request)
     {

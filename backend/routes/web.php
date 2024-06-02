@@ -38,6 +38,7 @@ Route::get('/myrecords', [RecordController::class, 'getAllRecords']);
 Route::get('/myrecords/{id}', [RecordController::class, 'getAccountRecords']);
 Route::post('/records', [RecordController::class, 'store']);
 Route::get('/records/{id}', [RecordController::class, 'show']);
+Route::get('/records/search', [RecordController::class, 'search']);
 Route::put('/records/{id}', [RecordController::class, 'update']);
 Route::delete('/records/{id}', [RecordController::class, 'destroy']);
 
@@ -59,6 +60,7 @@ Route::post('/addaccount', [AccountController::class, 'addAccount']);
 Route::post('/accounts', [AccountController::class, 'store']);
 Route::get('/accounts/{id}', [AccountController::class, 'show']);
 Route::put('/accounts/{id}', [AccountController::class, 'update']);
+Route::get('/accounts/search', [AccountController::class, 'search']);
 Route::delete('/accounts/{id}', [AccountController::class, 'destroy']);
 
 // Income routes

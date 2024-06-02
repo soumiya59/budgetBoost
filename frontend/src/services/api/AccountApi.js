@@ -19,6 +19,9 @@ const AccountApi = {
     addAccount : async (name,currency,balance) => {
         return await axiosClient.post('/addaccount',{name,currency,balance})
     },
+    searchAccounts : async (query) => {
+        return await axiosClient.get('/accounts/search/',{query})
+    }
 
 }
 

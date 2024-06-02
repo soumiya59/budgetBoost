@@ -22,6 +22,10 @@ const RecordApi = {
     addRecord : async (account_id,amount,type,currency,category,description) => {
         return await axiosClient.post('/records',{account_id,amount,type,currency,category,description})
     },
+    searchRecords : async (query) => {
+        return await axiosClient.get('/records/search/',{query})
+    },
+
     getCategories : async () => {
         return await axiosClient.get('/categories')
     }

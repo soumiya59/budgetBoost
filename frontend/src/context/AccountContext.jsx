@@ -4,7 +4,6 @@ import {createContext, useContext, useState} from "react";
 import AccountApi from "../services/api/AccountApi";
 
 export const AccountStateContext = createContext({
-  account: {},
   addAccount: () => { },
   getAccounts: () => { },
   getAccount: () => { },
@@ -19,7 +18,6 @@ export default function AccountContext({children}) {
   }
   const getAccounts = async () => {
     const data = await AccountApi.getAccounts()
-    // setAccounts(data)
     return data
   }
   const getAccount = async (id) => {

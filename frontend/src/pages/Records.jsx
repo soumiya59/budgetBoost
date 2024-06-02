@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Record from '../components/Record';
 import RecordApi from '../services/api/RecordApi';
 import AddRecordModal from '../components/AddRecordModal';
+import swal from 'sweetalert';
 
 function Records() {
   const [records, setRecords] = useState([]);
@@ -19,16 +20,16 @@ function Records() {
   }, []);
 
   const handleAddRecord = () => {
-    setShowModal(true); // Show the modal when Add Expense button is clicked
+    setShowModal(true);
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Hide the modal
+    setShowModal(false);
   };
 
   const handleExpenseAdded = () => {
-    // Handle actions after an expense is added (if needed)
-    setShowModal(false); // Hide the modal after adding the expense
+    setShowModal(false);
+    swal("Record Added successfully!");
   };
     return (
         <div>

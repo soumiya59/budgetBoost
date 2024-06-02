@@ -60,6 +60,18 @@ class AccountController extends Controller
         return response()->json(['account' => $account], 200);
     }
     
+    public function search(request $request){
+        $searchTerm = $request->filled('query') ? $request->input('query') : null;
+        $user = Auth::user();
+        $query = $user->records::query();
+        if ($searchTerm) {
+            $query->where('name', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('balance', 'LIKE', "%$searchTerm%")
+                    ->orWhere('currency', 'LIKE', "%$searchTerm%")
+                    ->get();
+        };
+        return response()->json(['accounts' => $query], 200);
+    }
 
 
     public function addAccount(Request $request)

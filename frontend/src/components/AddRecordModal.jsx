@@ -21,7 +21,7 @@ const formSchema = z.object({
 });
 
 
-function AddRecordModal({ onClose }) {
+function AddRecordModal({ onClose, onExpenseAdded }) {
     const [updaterecords, setUpdate] = useState(false);
     const [categories, setCategories] = useState([]);
     const [accounts, setAccounts] = useState([]);
@@ -62,7 +62,8 @@ function AddRecordModal({ onClose }) {
     async function onSubmit(values) {
         console.log(values);
         await RecordApi.addRecord(values.account_id,values.amount,values.type,values.currency,values.option,values.description).then(() => {
-                window.location.reload(false);
+            onExpenseAdded();
+            // window.location.reload(false);
         }).catch((err) => {
             console.log(err)
         })

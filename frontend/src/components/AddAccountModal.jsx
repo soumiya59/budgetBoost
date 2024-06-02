@@ -3,30 +3,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { useState } from "react";
-
-// import { UserStateContext } from '../context/UserContext';
-// import {useAccountContext} from '../context/AccountContext';
-
-// import { useContext } from 'react';
-// import { useNavigate } from "react-router-dom";
-import AccountApi from '../services/api/AccountApi'; // Import the 'AccountApi' module
+import {useAccountContext} from '../context/AccountContext';
+import { useNavigate } from "react-router-dom";
+import AccountApi from '../services/api/AccountApi'; 
 
 const formSchema = z.object({
   name: z.string().min(2).max(30),
@@ -35,10 +18,11 @@ const formSchema = z.object({
 });
 
 
-function AddAccountModal({ onClose }) {
-    // const { login, setAuthenticated, setUser, setToken } = useContext(UserStateContext);
-    // const { addAccount, getAccounts, accounts, setAccounts } = useAccountContext();
-    // const navigate = useNavigate();
+function AddAccountModal({ onClose, onAccountAdded }) {
+    const { accounts,setAccounts } = useAccountContext();
+    // const [accounts, setAccounts] = useState([]);
+
+    const navigate = useNavigate();
     const [updateaccounts, setUpdate] = useState(false);
 
     const form = useForm({
@@ -52,12 +36,13 @@ function AddAccountModal({ onClose }) {
     
 
     async function onSubmit(values) {
-        console.log(values);
-
+        // accounts.push({name:values.name, currency:values.currency, balance:values.balance});
+        // console.log("🚀 ~ onSubmit ~ accounts:", accounts)
         await AccountApi.addAccount(values.name,values.currency,values.balance).then((value) => {
             if (value.status === 201) {
-                // onClose();
-                window.location.reload(false);
+                // setAccounts((prevAccounts) => [...prevAccounts, {name:values.name, currency:values.currency, balance:values.balance}]);
+                // accounts.push({name:values.name, currency:values.currency, balance:values.balance});
+                onAccountAdded();
             }
         }).catch((err) => {
             console.log(err)
@@ -68,6 +53,7 @@ function AddAccountModal({ onClose }) {
         //         if (value.status === 200) {
         //             // setAccounts(value.data)
         //             navigate('/accounts')
+        //         window.location.reload(false);
         //         }
         //     }).catch(({ response }) => {
         //         console.log(response.data.errors.email.join())

@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import Account from '../components/Account';
 import AccountApi from '../services/api/AccountApi';
 import AddAccountModal from '../components/AddAccountModal';
+import swal from 'sweetalert';
+
 
 function Accounts() {
   const [accounts, setAccounts] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Fetch accounts when component mounts
     AccountApi.getAccounts()
       .then(({ data }) => {
         setAccounts(data.accounts);
@@ -19,16 +20,16 @@ function Accounts() {
   }, []);
 
   const handleAddAccount = () => {
-    setShowModal(true); // Show the modal when Add Account button is clicked
+    setShowModal(true); 
   };
 
   const handleCloseModal = () => {
-    setShowModal(false); // Hide the modal
+    setShowModal(false); 
   };
 
   const handleAccountAdded = () => {
-    // Handle actions after an account is added (if needed)
-    setShowModal(false); // Hide the modal after adding the account
+    setShowModal(false); 
+    swal("Account Added successfully!");
   };
 
   return (
