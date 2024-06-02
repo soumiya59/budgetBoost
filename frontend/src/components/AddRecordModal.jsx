@@ -63,7 +63,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
         console.log(values);
         await RecordApi.addRecord(values.account_id,values.amount,values.type,values.currency,values.option,values.description).then(() => {
             onExpenseAdded();
-            // window.location.reload(false);
+            onClose(); 
         }).catch((err) => {
             console.log(err)
         })

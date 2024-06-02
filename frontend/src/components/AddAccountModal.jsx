@@ -6,9 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import { useState } from "react";
-import {useAccountContext} from '../context/AccountContext';
-import { useNavigate } from "react-router-dom";
 import AccountApi from '../services/api/AccountApi'; 
 
 const formSchema = z.object({
@@ -17,14 +14,7 @@ const formSchema = z.object({
   currency: z.string().min(3).max(9),
 });
 
-
 function AddAccountModal({ onClose, onAccountAdded }) {
-    const { accounts,setAccounts } = useAccountContext();
-    // const [accounts, setAccounts] = useState([]);
-
-    const navigate = useNavigate();
-    const [updateaccounts, setUpdate] = useState(false);
-
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -33,38 +23,19 @@ function AddAccountModal({ onClose, onAccountAdded }) {
             currency: "mad",
         },
     });
-    
 
     async function onSubmit(values) {
-        // accounts.push({name:values.name, currency:values.currency, balance:values.balance});
-        // console.log("🚀 ~ onSubmit ~ accounts:", accounts)
-        await AccountApi.addAccount(values.name,values.currency,values.balance).then((value) => {
-            if (value.status === 201) {
-                // setAccounts((prevAccounts) => [...prevAccounts, {name:values.name, currency:values.currency, balance:values.balance}]);
-                // accounts.push({name:values.name, currency:values.currency, balance:values.balance});
+        try {
+            const response = await AccountApi.addAccount(values.name, values.currency, values.balance);
+            if (response.status === 201) {
                 onAccountAdded();
+                onClose(); 
             }
-        }).catch((err) => {
-            console.log(err)
-        })
-
-        // await addAccount(values.name, values.balance, values.currency)
-        //     .then((value) => {
-        //         if (value.status === 200) {
-        //             // setAccounts(value.data)
-        //             navigate('/accounts')
-        //         window.location.reload(false);
-        //         }
-        //     }).catch(({ response }) => {
-        //         console.log(response.data.errors.email.join())
-        //     })
+        } catch (err) {
+            console.log(err);
+        }
     }
 
-    const handleCloseModal = () => {
-        onClose(); 
-        setUpdate(!updateaccounts);
-    }
-    
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <Form {...form}>
@@ -130,13 +101,13 @@ function AddAccountModal({ onClose, onAccountAdded }) {
                         )}
                     />
                     <div className="flex justify-end">
-                        <Button name="button" onClick={handleCloseModal} className="bg-gray-500 hover:bg-gray-400 me-4">Cancel</Button>
+                        <Button name="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-400 me-4">Cancel</Button>
                         <Button name="submit">Submit</Button>
                     </div>
                 </form>
             </Form>
         </div>
-    )
+    );
 }
 
 export default AddAccountModal;

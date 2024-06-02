@@ -10,6 +10,10 @@ function Accounts() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    fetchAccounts();
+  }, []);
+
+  const fetchAccounts = () => {
     AccountApi.getAccounts()
       .then(({ data }) => {
         setAccounts(data.accounts);
@@ -17,8 +21,7 @@ function Accounts() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
+  };
   const handleAddAccount = () => {
     setShowModal(true); 
   };
@@ -30,6 +33,7 @@ function Accounts() {
   const handleAccountAdded = () => {
     setShowModal(false); 
     swal("Account Added successfully!");
+    fetchAccounts();
   };
 
   return (

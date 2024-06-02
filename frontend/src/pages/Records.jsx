@@ -9,15 +9,18 @@ function Records() {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
+    fetchRecords();
+  }, []);
+
+  const fetchRecords = () => {
     RecordApi.getAllMyRecords()
       .then(({ data }) => {
-        // console.log(data.records);
         setRecords(data.records);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
   const handleAddRecord = () => {
     setShowModal(true);
@@ -30,6 +33,7 @@ function Records() {
   const handleExpenseAdded = () => {
     setShowModal(false);
     swal("Record Added successfully!");
+    fetchRecords();
   };
     return (
         <div>
