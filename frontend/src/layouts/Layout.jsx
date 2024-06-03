@@ -61,6 +61,7 @@ function Layout() {
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setLangDropdownOpen(false);
       setIsDropdownOpen(false);
     }
   };
@@ -84,9 +85,9 @@ function Layout() {
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-mat-green font-mono">BudgetBoost</span>
             </p>
           </Link> 
-          <div className=" flex items-center justify-around md:order-2 space-x-3 md:space-x-4 rtl:space-x-reverse">       
+          <div className="relative flex items-center justify-around md:order-2 space-x-3 md:space-x-4 rtl:space-x-reverse">       
           
-        {/* language dropdown */}
+        {/* language dropdown   */}
         <div className="relative inline-block text-left " ref={dropdownRef}>
         <div>
           <button
@@ -142,13 +143,17 @@ function Layout() {
         )}
       </div>
 
-          {/* user menu dropdown */}
-            <button type="button" onClick={toggleDropdown} className="flex text-sm rounded-full md:me-0 ring-2  ring-mat-green focus:ring-bold-green dark:focus:ring-bold-green" id="user-menu-button" aria-expanded={isDropdownOpen} data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+      {/* user menu dropdown */}
+       <button type="button" onClick={toggleDropdown} className="flex text-sm rounded-full md:me-0 ring-2  ring-mat-green focus:ring-bold-green dark:focus:ring-bold-green" id="user-menu-button" aria-expanded={isDropdownOpen} data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom"
+      ref={dropdownRef}
+       >
+
+
             <span className="sr-only">Open user menu</span>
             <img className="w-8 h-8 rounded-full" src="/profile.png" alt="user photo"/>
-            </button>
+          </button>
           {isDropdownOpen && (
-            <div className="absolute top-5 right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+            <div className="absolute top-6 right-0 z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
               <div className="px-4 py-3">
                 <span className="block text-sm text-gray-900 dark:text-white">{user.name}</span>
                 <span className="block text-sm text-gray-500 truncate dark:text-gray-400">{user.email}</span>
@@ -163,7 +168,6 @@ function Layout() {
               </ul>
             </div>
           )}
-
           {/* mobile menu */}
           <button type="button" onClick={toggleMobileMenu} className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
           <span className="sr-only">Open main menu</span>
