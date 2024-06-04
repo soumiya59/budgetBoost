@@ -4,7 +4,8 @@ import Register from '../pages/Register';
 import Layout from '../layouts/Layout';
 import Dashboard from '../pages/Dashboard';
 import Accounts from '../pages/Accounts';
-import AccountEdit from '../pages/AccountEdit';
+import AccountView from '../pages/AccountView';
+// import RecordView from '../pages/RecordView';
 import Records from '../pages/Records';
 import Pricing from '../pages/Pricing';
 import Goals from '../pages/Goals';
@@ -23,13 +24,17 @@ export const router = createBrowserRouter([
                 element: <Accounts/>
             },
             {
-                path:'/accounts/:id',    // Dynamic route for account details
-                element: <AccountEdit/>
+                path:'/accounts/:id',   
+                element: <AccountView/>
             },
             {
                 path:'/records',    
                 element: <Records/>
             },
+            // {
+            //     path:'/records/:id',    
+            //     element: <RecordView/>
+            // },
             {
                 path:'/pricing',    
                 element: <Pricing/>

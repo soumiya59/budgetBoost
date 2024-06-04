@@ -1,50 +1,59 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Account from '../components/Account';
-import AccountApi from '../services/api/AccountApi';
-import EditAccountModal from '../components/EditAccountModal';
+import Record from '../components/Record';
+import RecordApi from '../services/api/RecordApi';
+import EditRecordModal from '../components/EditRecordModal';
 import { useNavigate } from "react-router-dom";
+import swal from 'sweetalert';
 
-function AccountEdit() {
-  const [account, setAccount] = useState([]);
+function RecordView() {
+  const [record, setRecord] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate()
   const { id } = useParams();
 
   useEffect(() => {
-    AccountApi.getAccount(id)
+    fetchRecord();
+  }, []);
+
+  const fetchRecord = ()=>{
+    RecordApi.getRecord(id)
       .then(({ data }) => {
-        setAccount(data.account);
+        setRecord(data.record);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }
 
   const handleCloseModal = () => {
-    setShowModal(false); // Hide the modal
+    setShowModal(false);
   };
   const edit = () => {
-    setShowModal(true); // Show the modal when Add Account button is clicked
+    setShowModal(true); 
   }
+
   const deleteAcc = () => {
-    AccountApi.deleteAccount(id)
+    RecordApi.deleteRecord(id)
       .then(({ data }) => {
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
-      navigate('/accounts')
+      swal("Record Deleted successfully!");
+      navigate('/records')
   }
-  const handleAccountEdited = () => {
-    setShowModal(false); // Hide the modal after adding the account
+  const handleRecordEdited = () => {
+    setShowModal(false);
+    swal("Record Edited successfully!");
+    fetchRecord();
   }
 
 
   return (
     <>
-        <div className="max-w-screen-xl flex-wrap items-center mx-auto p-6 pt-10">
+        <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto p-6 pt-10">
           <div className='flex justify-end '>
             <button
               onClick={edit}
@@ -61,14 +70,14 @@ function AccountEdit() {
           </div>
           <br />
           <div>
-            <Account key={account.id} type={account.name} balance={account.balance} currency={account.currency} id={account.id}/>
+            <Record key={record.id} type={record.name} balance={record.balance} currency={record.currency} id={record.id}/>
           </div>
         </div>
       {showModal &&  (
-        <EditAccountModal onClose={handleCloseModal} onAccountEdited={handleAccountEdited} />
+        <EditRecordModal onClose={handleCloseModal} onRecordEdited={handleRecordEdited} />
       )}
     </>
   );
 }
 
-export default AccountEdit;
+export default RecordView;

@@ -38,7 +38,7 @@ function Accounts() {
 
   return (
     <>
-        <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto p-6 pt-10">
+        <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto  pt-10 ps-5">
           <button
             onClick={handleAddAccount}
             className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto me-5 w-36"

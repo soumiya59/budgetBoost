@@ -39,6 +39,7 @@ function Layout() {
   };
 
   const logoutCallback = () => {
+    console.log("🚀 ~ logoutCallback ~ logoutCallback:")
     UserApi.logout().then(()=>{
       logout()
       navigate('/login')
@@ -61,8 +62,8 @@ function Layout() {
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setLangDropdownOpen(false);
-      setIsDropdownOpen(false);
+      // setLangDropdownOpen(false);
+      // setIsDropdownOpen(false);
     }
   };
 

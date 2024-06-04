@@ -6,40 +6,43 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import RecordApi from '../services/api/RecordApi'; 
 import AccountApi from "../services/api/AccountApi";
 
 const formSchema = z.object({
+    accountName:z.string(),
     account_id:z.coerce.number(),
     type:z.string(),
-    amount: z.coerce.number().min(0),
+    amount: z.coerce.number(),
     currency:z.string(),
     category:z.string(),
     option:z.string(),
     description:z.string()
 });
 
-
-function AddRecordModal({ onClose, onExpenseAdded }) {
-    // const [updaterecords, setUpdate] = useState(false);
+function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
+    const [record, setRecord] = useState([]);
     const [categories, setCategories] = useState([]);
     const [accounts, setAccounts] = useState([]);
+    const [account, setAccount] = useState({});
+    // const navigate = useNavigate();
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             account_id:0,
-            type: "expense",
+            accountName:"",
+            type: "",
             amount: 0,
-            currency: "mad",
+            currency: "",
             category: "",
-            option: "",
             description: "",
         },
     });
-    
-     useEffect(() => {
+
+    useEffect(() => {
         RecordApi.getCategories()
             .then(({ data }) => {
                 setCategories(data.categories);
@@ -48,36 +51,48 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                 console.log(err);
             });
 
-         AccountApi.getAccounts()
+        RecordApi.getRecord(id)
+        .then(({ data }) => {
+            form.setValue("accountName","general");
+            form.setValue("account_id", data.record.account_id);
+            form.setValue("type", data.record.type);
+            form.setValue("amount", data.record.amount);
+            form.setValue("currency", data.record.currency);
+            form.setValue("category", data.record.category);
+            form.setValue("description", data.record.description);
+            setRecord(data.record);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+        AccountApi.getAccounts()
             .then(({ data }) => {
                 setAccounts(data.accounts);
-            }
-            )
+                setAccount(data.accounts.filter((acc) => acc.id ===  record.account_id))
+                console.log("🚀 ~ .then ~ record:", record)
+                console.log(account)
+            })
             .catch((err) => {
                 console.log(err);
             })
-          
-    }, []);
+  }, []);
 
     async function onSubmit(values) {
-        console.log(values);
-        await RecordApi.addRecord(values.account_id,values.amount,values.type,values.currency,values.option,values.description).then(() => {
-            onExpenseAdded();
+        await RecordApi.editRecord(id,values.account_id,values.amount,values.type, values.currency, values.category, values.description ).then(({ data }) => {
+            console.log(data);
+            onRecordEdited();
             onClose(); 
         }).catch((err) => {
-            console.log(err)
-        })
+            console.log(err);
+        });
     }
 
-    const handleCloseModal = () => {
-        onClose(); 
-        // setUpdate(!updaterecords);
-    }
     
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 bg-white p-8 rounded-md w-96">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 bg-white p-8 rounded-md w-1/3">
                     <FormField
                         control={form.control}
                         name="account_id"
@@ -87,7 +102,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select the account to update" />
+                                            <SelectValue placeholder={field.value} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -109,7 +124,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select the record type" />
+                                            <SelectValue placeholder={field.value} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -128,7 +143,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                             <FormItem>
                                 <FormLabel>Amount</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="0" {...field} type='number' />
+                                    <Input placeholder="0" {...field} defaultValue={field.value} type='number' />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -143,7 +158,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a currency" />
+                                            <SelectValue placeholder={field.value} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -223,8 +238,9 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                    
 
                     <div className="flex justify-end">
-                        <Button name="button" onClick={handleCloseModal} className="bg-gray-500 hover:bg-gray-400 me-4">Cancel</Button>
-                        <Button name="submit">Add</Button>
+                        <Button name="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-400 me-4">Cancel</Button>
+                        <Button name="button" onClick={onRecordDeleted} className="bg-red-500 hover:bg-red-400 me-4">Delete</Button>
+                        <Button name="submit">Submit</Button>
                     </div>
                 </form>
             </Form>
@@ -232,4 +248,4 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
     )
 }
 
-export default AddRecordModal;
+export default EditRecordModal ;

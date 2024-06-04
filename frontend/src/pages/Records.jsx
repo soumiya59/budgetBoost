@@ -35,20 +35,21 @@ function Records() {
     swal("Record Added successfully!");
     fetchRecords();
   };
+
     return (
         <div>
 
         <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto p-6 pt-10">
           <button
             onClick={handleAddRecord}
-            className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto me-5 w-36"
+            className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto  w-36"
           >
             Add Record
           </button>
           <br />
           <div>
             {records.map((item) => (
-              <Record key={item.id} type={item.type} description={item.description} amount={item.amount} currency={item.currency} id={item.id} category={item.category} account_id={item.account_id}/>
+              <Record key={item.id} id={item.id} type={item.type} description={item.description} amount={item.amount} currency={item.currency} category={item.category} account_id={item.account_id}/>
             ))}
           </div>
         </div>

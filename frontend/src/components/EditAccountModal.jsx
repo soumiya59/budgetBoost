@@ -29,7 +29,7 @@ const formSchema = z.object({
   currency: z.string().min(3).max(9),
 });
 
-function EditAccountModal({ onClose }) {
+function EditAccountModal({ onClose , onAccountEdited}) {
     const [account, setAccount] = useState([]);
     const navigate = useNavigate();
     const { id } = useParams();
@@ -43,10 +43,9 @@ function EditAccountModal({ onClose }) {
         },
     });
     
-    useEffect(() => {
+  useEffect(() => {
         AccountApi.getAccount(id)
         .then(({ data }) => {
-            // Set the default values of the form to the account data
             form.setValue("name", data.account.name);
             form.setValue("balance", data.account.balance);
             form.setValue("currency", data.account.currency);
@@ -55,7 +54,7 @@ function EditAccountModal({ onClose }) {
         .catch((err) => {
             console.log(err);
         });
-    }, [id, form]); // Include 'id' and 'form' in the dependencies array
+  }, []);
 
     async function onSubmit(values) {
         await AccountApi.editAccount(id, values.name, values.currency, values.balance).then(({ data }) => {
@@ -63,13 +62,11 @@ function EditAccountModal({ onClose }) {
         }).catch((err) => {
             console.log(err);
         });
-        handleCloseModal();
-        navigate('/accounts')
+        onAccountEdited();
+        onClose(); 
+        // navigate('/accounts')
     }
 
-    const handleCloseModal = () => {
-        onClose(); 
-    }
     
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
@@ -136,7 +133,7 @@ function EditAccountModal({ onClose }) {
                         )}
                     />
                     <div className="flex justify-end">
-                        <Button name="button" onClick={handleCloseModal} className="bg-gray-500 hover:bg-gray-400 me-4">Cancel</Button>
+                        <Button name="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-400 me-4">Cancel</Button>
                         <Button name="submit">Submit</Button>
                     </div>
                 </form>

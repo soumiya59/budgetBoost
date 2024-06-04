@@ -32,7 +32,6 @@ Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
 //record routes
-
 Route::get('/records', [RecordController::class, 'index']);
 Route::get('/myrecords', [RecordController::class, 'getAllRecords']);
 Route::get('/myrecords/{id}', [RecordController::class, 'getAccountRecords']);

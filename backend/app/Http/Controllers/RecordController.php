@@ -68,7 +68,7 @@ class RecordController extends Controller
         return response()->json(['record' => $record], 201);
     }
 
-    public function show($id)
+    public function show(request $request, $id)
     {
         $record = Record::find($id);
 
@@ -88,12 +88,12 @@ class RecordController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'account_id' => 'required|string|max:255',
+            'account_id' => 'required|numeric|min:0',
             'amount' => 'required|numeric|min:0',
+            'type'=> 'required|string',
             'currency'=>'required|string',
             'category' => 'required|string',
-            'description' => 'nullable|string|max:255',
-            'type'=> 'required|string'
+            'description' => 'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {
@@ -102,11 +102,11 @@ class RecordController extends Controller
 
         $record->update([
             'account_id' => $request->account_id,
-            'category' => $request->category,
             'amount' => $request->amount,
+            'type'=>$request->type,
             'currency'=>$request->currency,
-            'description' => $request->description,
-            'type'=>$request->type
+            'category' => $request->category,
+            'description' => $request->description
         ]);
 
         return response()->json(['record' => $record], 200);
