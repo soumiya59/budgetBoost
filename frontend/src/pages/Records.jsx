@@ -7,6 +7,8 @@ import swal from 'sweetalert';
 function Records() {
   const [records, setRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [searchData, setSearchData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchRecords();
@@ -36,21 +38,54 @@ function Records() {
     fetchRecords();
   };
 
+  const search = (e) => {
+    const search = e.target.value;
+    setSearchTerm(search);
+
+    RecordApi.searchRecords(search)
+      .then(({ data }) => {
+        setSearchData(data.records);
+        console.log(data.records);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
+
     return (
         <div>
+        <div className="max-w-screen-xl h-screen mx-auto p-6 pt-10">
+          <div className='flex items-center mb-10'>
+            <form action="">
+            <input
+              type="text"
+              className="w-60 h-10 border border-gray-400 bg-royal-green rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={search}
+            />
+            </form>
+            <button
+              onClick={handleAddRecord}
+              className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto  w-36"
+            >
+              Add Record
+            </button>
+          </div>
 
-        <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto p-6 pt-10">
-          <button
-            onClick={handleAddRecord}
-            className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto  w-36"
-          >
-            Add Record
-          </button>
-          <br />
           <div>
-            {records.map((item) => (
-              <Record key={item.id} id={item.id} type={item.type} description={item.description} amount={item.amount} currency={item.currency} category={item.category} account_id={item.account_id}/>
-            ))}
+          {(searchTerm ? searchData : records).map((item) => (
+            <Record
+              key={item.id}
+              id={item.id}
+              type={item.type}
+              description={item.description}
+              amount={item.amount}
+              currency={item.currency}
+              category={item.category}
+              account_id={item.account_id}
+            />
+          ))}
           </div>
         </div>
         {showModal &&  (
@@ -58,6 +93,7 @@ function Records() {
         )}
         </div>
     );
+  
 }
 
 export default Records;

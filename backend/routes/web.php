@@ -33,11 +33,11 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
 //record routes
 Route::get('/records', [RecordController::class, 'index']);
-Route::get('/myrecords', [RecordController::class, 'getAllRecords']);
+Route::get('/myrecords', [RecordController::class, 'getAllMyRecords']);
 Route::get('/myrecords/{id}', [RecordController::class, 'getAccountRecords']);
 Route::post('/records', [RecordController::class, 'store']);
 Route::get('/records/{id}', [RecordController::class, 'show']);
-Route::get('/records/search', [RecordController::class, 'search']);
+Route::get('/records/search/{searchTerm}', [RecordController::class, 'search']);
 Route::put('/records/{id}', [RecordController::class, 'update']);
 Route::delete('/records/{id}', [RecordController::class, 'destroy']);
 

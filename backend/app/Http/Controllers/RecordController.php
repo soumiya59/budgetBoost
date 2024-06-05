@@ -15,7 +15,7 @@ class RecordController extends Controller
         $records = Record::all();
         return response()->json(['records' => $records], 200);
     }
-    public function getAllRecords(request $request){
+    public function getAllMyRecords(request $request){
         $user = Auth::user();
         $records = $user->records()->get();
         return response()->json(['records' => $records], 200);
@@ -26,21 +26,23 @@ class RecordController extends Controller
         $records = $account->records()->get();
         return response()->json(['records' => $records], 200);
     }
-    
-    public function search(request $request){
-        $searchTerm = $request->filled('query') ? $request->input('query') : null;
+
+    public function search($searchTerm){
         $user = Auth::user();
-        $query = $user->records::query();
-        if ($searchTerm) {
-            $query->where('amount', 'like', '%'.$searchTerm.'%')
-                    ->orWhere('type', 'LIKE', "%$searchTerm%")
-                    ->orWhere('currency', 'LIKE', "%$searchTerm%")
-                    ->orWhere('category', 'LIKE', "%$searchTerm%")
-                    ->orWhere('description', 'LIKE', "%$searchTerm%")
-                    ->get();
-        };
-        return response()->json(['records' => $query], 200);
+        $query = $user->records()->where('amount', 'like', '%'.$searchTerm.'%')
+                ->orWhere('type', 'LIKE', "%$searchTerm%")
+                ->orWhere('currency', 'LIKE', "%$searchTerm%")
+                ->orWhere('category', 'LIKE', "%$searchTerm%")
+                ->orWhere('description', 'LIKE', "%$searchTerm%");
+                
+        $records = $query->get();
+        if ($records->isEmpty()) {
+            return response()->json(['message' => 'Record not found'], 404);
+        }
+
+        return response()->json(['records' => $records], 200);
     }
+
 
     public function store(Request $request)
     {

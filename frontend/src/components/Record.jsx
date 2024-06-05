@@ -63,12 +63,12 @@ function Record({type, amount, currency, id, description, category, account_id }
 
   const backgroundColor = type === 'expense' ? '#aca7cb' :
                           type === 'income' ? '#958bc3' : '#aca7cb';
-  const imageSrc = account.name === 'saving' ? 'saving.png' : 
-                   account.name === 'cash' ? 'cash.png' : 
-                   account.name === 'general' ? 'general.png' : 
-                   account.name === 'creditcard' ? 'creditcard.png' : 
-                   account.name === 'loan' ? 'loan.png' : 
-                   account.name === 'bank' ? 'bank.png' : 
+  const imageSrc = account?.name === 'saving' ? 'saving.png' : 
+                   account?.name === 'cash' ? 'cash.png' : 
+                   account?.name === 'general' ? 'general.png' : 
+                   account?.name === 'creditcard' ? 'creditcard.png' : 
+                   account?.name === 'loan' ? 'loan.png' : 
+                   account?.name === 'bank' ? 'bank.png' : 
                    'general.png';
   
   return (
@@ -80,7 +80,7 @@ function Record({type, amount, currency, id, description, category, account_id }
       </div>
 
       <div className='shrink w-28 mx-10 text-center'>
-        <p>{account.name}</p>
+        <p>{account?.name}</p>
       </div>
 
       <div className=' flex-auto '>
