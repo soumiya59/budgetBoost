@@ -29,18 +29,27 @@ class RecordController extends Controller
 
     public function search($searchTerm){
         $user = Auth::user();
-        $query = $user->records()->where('amount', 'like', '%'.$searchTerm.'%')
-                ->orWhere('type', 'LIKE', "%$searchTerm%")
-                ->orWhere('currency', 'LIKE', "%$searchTerm%")
-                ->orWhere('category', 'LIKE', "%$searchTerm%")
-                ->orWhere('description', 'LIKE', "%$searchTerm%");
-                
-        $records = $query->get();
-        if ($records->isEmpty()) {
-            return response()->json(['message' => 'Record not found'], 404);
+        if ($user) {
+            
+            $userRecords = $user->records();
+            $records = $userRecords->where(function($query) use ($searchTerm) {
+               $query->where('amount', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('type', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('currency', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('category', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('description', 'like', '%'.$searchTerm.'%');
+            })->get();
+            
+            if ($records->isEmpty()) {
+                return response()->json(['message' => 'Record not found'], 404);
+            }else{
+                return response()->json(['records' => $records], 200);
+            }
+            
+        } else {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return response()->json(['records' => $records], 200);
     }
 
 
