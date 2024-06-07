@@ -22,13 +22,41 @@ class Account extends Model
         return $this->hasMany(Record::class);
     }
     
-    public function expenses()
-    {
-        return $this->hasMany(Expense::class);
-    }
+    // public function expenses()
+    // {
+    //     return $this->hasMany(Expense::class);
+    // }
     
-    public function incomes()
+    // public function incomes()
+    // {
+    //     return $this->hasMany(Income::class);
+    // }
+
+      public function updateBalance($amount, $type)
     {
-        return $this->hasMany(Income::class);
+        if ($type == 'expense') {
+            $this->balance -= $amount;
+        } else if ($type == 'income') {
+            $this->balance += $amount;
+        }
+        $this->save();
+    }
+
+    // Method to revert balance
+    public function revertBalance($amount, $type)
+    {
+        if ($type == 'expense') {
+            $this->balance += $amount;
+        } else if ($type == 'income') {
+            $this->balance -= $amount;
+        }
+        $this->save();
+    }
+    public function updateBalanceWithRecordUpdate($oldAmount, $oldType, $newAmount, $newType)
+    {
+        // Revert the old balance first
+        $this->revertBalance($oldAmount, $oldType);
+        // Apply the new balance
+        $this->updateBalance($newAmount, $newType);
     }
 }

@@ -76,6 +76,9 @@ class RecordController extends Controller
             'type'=>$request->type
         ]);
         $user->records()->save($record);
+        $record->account->updateBalance($record->amount, $record->type);
+
+
         return response()->json(['record' => $record], 201);
     }
 
@@ -110,6 +113,8 @@ class RecordController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
+        
+        $record->account->updateBalanceWithRecordUpdate($record->amount, $record->type, $request->amount, $request->type);
 
         $record->update([
             'account_id' => $request->account_id,
@@ -126,12 +131,15 @@ class RecordController extends Controller
     public function destroy($id)
     {
         $record = Record::find($id);
+        // $lastRecord = record::latest()->first()->amount;
 
         if (!$record) {
             return response()->json(['message' => 'Record not found'], 404);
         }
 
+        $record->account->revertBalance($record->amount, $record->type);
         $record->delete();
+        // $record->account->updateBalance($lastRecord, $record->type, isDelete: true);
         return response()->json(['message' => 'Record deleted successfully'], 200);
     }
 }
