@@ -7,7 +7,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from 
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import RecordApi from '../services/api/RecordApi'; 
 import AccountApi from "../services/api/AccountApi";
 
@@ -70,8 +69,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
             .then(({ data }) => {
                 setAccounts(data.accounts);
                 setAccount(data.accounts.filter((acc) => acc.id ===  record.account_id))
-                console.log("🚀 ~ .then ~ record:", record)
-                console.log(account)
             })
             .catch((err) => {
                 console.log(err);

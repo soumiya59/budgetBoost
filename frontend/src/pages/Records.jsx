@@ -59,7 +59,7 @@ function Records() {
             <form action="">
             <input
               type="text"
-              className="w-60 h-10 border border-gray-400 bg-royal-green rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              className="w-60 h-10 border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
               placeholder="Search"
               value={searchTerm}
               onChange={search}
@@ -67,7 +67,7 @@ function Records() {
             </form>
             <button
               onClick={handleAddRecord}
-              className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto  w-36"
+              className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded flex ms-auto  w-36"
             >
               Add Record
             </button>

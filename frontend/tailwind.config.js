@@ -35,6 +35,12 @@ module.exports = {
         "royal-green":"#324b4c",
         "mat-blue":"#405e6a",
         "dark-purple":"#44455a",
+        
+        "green1":"#48A088",
+        "light-green1":"#85E3D6",
+        "light-blue1":"#63BBD3",
+        "blue1":"#2150A8",
+        "dark-blue1":"#04124B",
 
         
         border: "hsl(var(--border))",

@@ -199,7 +199,7 @@ function Layout() {
         </div>
         </nav> 
 
-             <main className=" bg-royal-green font-mono">
+             <main className="bg-dark-blue1 font-mono">
                 <Outlet/>
              </main>
              

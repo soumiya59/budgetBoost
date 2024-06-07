@@ -1,12 +1,12 @@
 // eslint-disable-next-line react/prop-types
 function Account({type, balance, currency,id}) {
 
-  const backgroundColor = type === 'saving' ? '#aca7cb' :
-                          type === 'cash' ? '#aca9bb' : 
-                          type === 'general' ? '#d8d5e7' : 
-                          type === 'creditcard' ? '#d2e6e7' : 
-                          type === 'loan' ? '#cecbdd' : 
-                          type === 'bank' ? '#bfcdda' : 
+  const backgroundColor = type === 'saving' ? '#ddc1ee' :
+                          type === 'creditcard' ? '#b5ebba' : 
+                          type === 'general' ? '#b5e2eb' : 
+                          type === 'cash' ? '#bab5eb' : 
+                          type === 'loan' ? '#b7cdeb' : 
+                          type === 'bank' ? '#bcd5ec' : 
                           '#aca7cb';
   const imageSrc = type === 'saving' ? 'saving.png' : 
                    type === 'cash' ? 'cash.png' : 

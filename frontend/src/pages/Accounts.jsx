@@ -41,7 +41,7 @@ function Accounts() {
         <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto  pt-10 ps-5">
           <button
             onClick={handleAddAccount}
-            className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded flex ms-auto me-5 w-36"
+            className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded flex ms-auto me-5 w-36"
           >
             Add Account
           </button>
