@@ -3,25 +3,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import AccountApi from '../services/api/AccountApi'; // Import the 'AccountApi' module
+import { useParams } from "react-router-dom";
+import AccountApi from '../services/api/AccountApi'; 
 
 const formSchema = z.object({
   name: z.string().min(2).max(30),
@@ -31,7 +18,6 @@ const formSchema = z.object({
 
 function EditAccountModal({ onClose , onAccountEdited}) {
     const [account, setAccount] = useState([]);
-    const navigate = useNavigate();
     const { id } = useParams();
 
     const form = useForm({
@@ -64,7 +50,6 @@ function EditAccountModal({ onClose , onAccountEdited}) {
         });
         onAccountEdited();
         onClose(); 
-        // navigate('/accounts')
     }
 
     

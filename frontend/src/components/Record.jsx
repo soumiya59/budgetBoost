@@ -6,14 +6,12 @@ import AccountApi from '../services/api/AccountApi';
 import EditRecordModal from '../components/EditRecordModal';
 import swal from 'sweetalert';
 
-function Record({type, amount, currency, id, description, category, account_id }) {
+function Record({type, amount, currency, id, description, category, account_id ,fetchRecords}) {
   
-  const [record, setRecord] = useState({});
   const [account, setAccount] = useState({});
   const [viewRecord, setViewRecord] = useState(false);
 
   useEffect(() => {
-    fetchRecord();
     fetchAccount();
   }, []);
 
@@ -26,21 +24,12 @@ function Record({type, amount, currency, id, description, category, account_id }
         console.log(err);
       });
   }
-  const fetchRecord = ()=>{
-    RecordApi.getRecord(id)
-      .then(({ data }) => {
-        setRecord(data.record);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+ 
   const deleteRecord = () => {
     RecordApi.deleteRecord(id)
-      .then(({ data }) => {
-        console.log(data);
+      .then(() => {
         setViewRecord(false);
-        fetchRecord();
+        fetchRecords()
       })
       .catch((err) => {
         console.log(err);
@@ -54,9 +43,9 @@ function Record({type, amount, currency, id, description, category, account_id }
   const handleRecordEdited = () => {
     setViewRecord(false);
     swal("Record Edited successfully!");
-    fetchRecord();
+    fetchRecords();
+    
   }
-
   const handleCloseModal = () => {
     setViewRecord(false);
   }

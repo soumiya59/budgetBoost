@@ -16,11 +16,11 @@ const RecordApi = {
     deleteRecord : async (id) => {
         return await axiosClient.delete('/records/'+id)
     },
-    editRecord : async (id, account_id, amount,type,currency,category,description) => {
-        return await axiosClient.put('/records/'+id,{account_id,amount,type,currency,category,description})
+    editRecord : async (id, account_id, amount,type,currency,category,option,description) => {
+        return await axiosClient.put('/records/'+id,{account_id,amount,type,currency,category,option,description})
     },
-    addRecord : async (account_id,amount,type,currency,category,description) => {
-        return await axiosClient.post('/records',{account_id,amount,type,currency,category,description})
+    addRecord : async (account_id,amount,type,currency,category,option,description) => {
+        return await axiosClient.post('/records',{account_id,amount,type,currency,category,option,description})
     },
     // searchRecords : async (query) => {
     //     return await axiosClient.get('/records/search/',{query})

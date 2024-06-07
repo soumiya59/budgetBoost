@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('type', ['expense', 'income']);
             // id catgory
             $table->string('category');
+            $table->string('option');
             $table->text('description')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

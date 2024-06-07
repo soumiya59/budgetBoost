@@ -37,6 +37,7 @@ class RecordController extends Controller
                     ->orWhere('type', 'like', '%'.$searchTerm.'%')
                     ->orWhere('currency', 'like', '%'.$searchTerm.'%')
                     ->orWhere('category', 'like', '%'.$searchTerm.'%')
+                    ->orWhere('option', 'like', '%'.$searchTerm.'%')
                     ->orWhere('description', 'like', '%'.$searchTerm.'%');
             })->get();
             
@@ -60,6 +61,7 @@ class RecordController extends Controller
             'amount' => 'required|numeric|min:0',
             'currency'=>'required|string',
             'category' => 'required|string',
+            'option' => 'required|string',
             'description' => 'nullable|string|max:255',
             'type'=> 'required|string'
         ]);
@@ -70,6 +72,7 @@ class RecordController extends Controller
         $record = new Record([
             'account_id' => $request->account_id,
             'category' => $request->category,
+            'option' => $request->option,
             'amount' => $request->amount,
             'currency'=>$request->currency,
             'description' => $request->description,
@@ -107,6 +110,7 @@ class RecordController extends Controller
             'type'=> 'required|string',
             'currency'=>'required|string',
             'category' => 'required|string',
+            'option' => 'required|string',
             'description' => 'nullable|string|max:255'
         ]);
 
@@ -122,6 +126,7 @@ class RecordController extends Controller
             'type'=>$request->type,
             'currency'=>$request->currency,
             'category' => $request->category,
+            'option' => $request->option,
             'description' => $request->description
         ]);
 

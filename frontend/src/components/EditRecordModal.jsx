@@ -11,14 +11,14 @@ import RecordApi from '../services/api/RecordApi';
 import AccountApi from "../services/api/AccountApi";
 
 const formSchema = z.object({
-    accountName:z.string(),
+    // accountName:z.string(),
     account_id:z.coerce.number(),
     type:z.string(),
     amount: z.coerce.number(),
     currency:z.string(),
     category:z.string(),
     option:z.string(),
-    description:z.string()
+    description:z.string().nullable(),
 });
 
 function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
@@ -26,22 +26,25 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
     const [categories, setCategories] = useState([]);
     const [accounts, setAccounts] = useState([]);
     const [account, setAccount] = useState({});
-    // const navigate = useNavigate();
+    const [initialAccountName, setInitialAccountName] = useState("");
+
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            account_id:0,
-            accountName:"",
+            account_id:"",
+            // accountName:"",
             type: "",
             amount: 0,
             currency: "",
             category: "",
-            description: "",
+            option: "",
+            description: " ",
         },
     });
 
     useEffect(() => {
+        // Fetch categories
         RecordApi.getCategories()
             .then(({ data }) => {
                 setCategories(data.categories);
@@ -50,34 +53,37 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                 console.log(err);
             });
 
-        RecordApi.getRecord(id)
-        .then(({ data }) => {
-            form.setValue("accountName","general");
-            form.setValue("account_id", data.record.account_id);
-            form.setValue("type", data.record.type);
-            form.setValue("amount", data.record.amount);
-            form.setValue("currency", data.record.currency);
-            form.setValue("category", data.record.category);
-            form.setValue("description", data.record.description);
-            setRecord(data.record);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-
+        // Fetch accounts
         AccountApi.getAccounts()
             .then(({ data }) => {
                 setAccounts(data.accounts);
-                setAccount(data.accounts.filter((acc) => acc.id ===  record.account_id))
+                RecordApi.getRecord(id)
+                    .then(({ data }) => {
+                        const fetchedRecord = data.record;
+                        setRecord(fetchedRecord);
+                        const account = accounts.find(acc => acc.id === fetchedRecord.account_id);
+                        setInitialAccountName(account ? account.name : "");
+                        console.log(initialAccountName)
+                        form.setValue("account_id", fetchedRecord.account_id);
+                        form.setValue("type", fetchedRecord.type);
+                        form.setValue("amount", fetchedRecord.amount);
+                        form.setValue("currency", fetchedRecord.currency);
+                        form.setValue("category", fetchedRecord.category);
+                        form.setValue("option", fetchedRecord.option);
+                        form.setValue("description", fetchedRecord.description);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
             })
             .catch((err) => {
                 console.log(err);
-            })
-  }, []);
+            });
+    }, [id, form]);
+
 
     async function onSubmit(values) {
-        await RecordApi.editRecord(id,values.account_id,values.amount,values.type, values.currency, values.category, values.description ).then(({ data }) => {
-            console.log(data);
+        await RecordApi.editRecord(id,values.account_id,values.amount,values.type, values.currency, values.category,values.option, values.description ).then(() => {
             onRecordEdited();
             onClose(); 
         }).catch((err) => {
@@ -85,7 +91,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
         });
     }
 
-    
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <Form {...form}>
@@ -93,13 +98,13 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                     <FormField
                         control={form.control}
                         name="account_id"
-                        render={({ field }) => (
+                        render={({ field}) => (
                             <FormItem>
                                 <FormLabel>Account</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder={field.value} />
+                                            <SelectValue placeholder={initialAccountName} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -177,7 +182,7 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select category" />
+                                                    <SelectValue placeholder={field.value} />
                                                 </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -190,7 +195,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                             </FormItem>
                         )}
                     />
-                    {form.watch("category") && (
                         <FormField
                             control={form.control}
                             name="option"
@@ -203,7 +207,7 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue placeholder="Select option" />
+                                                    <SelectValue placeholder={field.value} />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -217,7 +221,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                                 );
                             }}
                             />
-                        )}
                     
                     <FormField
                     control={form.control}

@@ -36,7 +36,8 @@ class RecordFactory extends Factory
             'amount' => $this->faker->randomFloat(2, -1000, 1000),
             'currency' => $this->faker->randomElement(['mad', 'usd', 'euro']),
             'type' => $this->faker->randomElement(['expense', 'income']),
-            'category' => $option,
+            'category' => $category->type,
+            'option' => $option,
             'description' => $this->faker->sentence,
         ];
     }

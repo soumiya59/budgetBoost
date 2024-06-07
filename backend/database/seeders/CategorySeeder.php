@@ -52,6 +52,10 @@ class CategorySeeder extends Seeder
                 'options' => ['brokerage', 'crypto', 'funds', 'gold', 'real estate', 'shares', 'startups'],
             ],
             [
+                'type' => 'income',
+                'options' => ['salary', 'bonus', 'dividends', 'interests', 'rental', 'sale', 'gift', 'others'],
+            ],
+            [
                 'type' => 'others',
                 'options' => ['others', 'missing'],
             ],

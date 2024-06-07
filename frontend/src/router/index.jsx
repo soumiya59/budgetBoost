@@ -5,7 +5,6 @@ import Layout from '../layouts/Layout';
 import Dashboard from '../pages/Dashboard';
 import Accounts from '../pages/Accounts';
 import AccountView from '../pages/AccountView';
-// import RecordView from '../pages/RecordView';
 import Records from '../pages/Records';
 import Pricing from '../pages/Pricing';
 import Goals from '../pages/Goals';
@@ -31,10 +30,6 @@ export const router = createBrowserRouter([
                 path:'/records',    
                 element: <Records/>
             },
-            // {
-            //     path:'/records/:id',    
-            //     element: <RecordView/>
-            // },
             {
                 path:'/pricing',    
                 element: <Pricing/>

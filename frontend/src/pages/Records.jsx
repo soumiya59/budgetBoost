@@ -84,12 +84,13 @@ function Records() {
               currency={item.currency}
               category={item.category}
               account_id={item.account_id}
+              fetchRecords={fetchRecords}
             />
           ))}
           </div>
         </div>
         {showModal &&  (
-          <AddRecordModal onClose={handleCloseModal} onExpenseAdded={handleExpenseAdded} />
+          <AddRecordModal onClose={handleCloseModal} onExpenseAdded={handleExpenseAdded} setRecords={setRecords} fetchRecords={fetchRecords}/>
         )}
         </div>
     );

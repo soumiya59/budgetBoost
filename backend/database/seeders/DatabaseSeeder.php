@@ -51,7 +51,8 @@ class DatabaseSeeder extends Seeder
             'currency' => 'mad',
             'type' => 'income',
             'category' => 'income',
-            'description' => 'monthly salary',
+            'option' => 'sale',
+            'description' => 'admin initial balance',
         ]);
     }
 }

@@ -60,8 +60,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
     }, []);
 
     async function onSubmit(values) {
-        console.log(values);
-        await RecordApi.addRecord(values.account_id,values.amount,values.type,values.currency,values.option,values.description).then(() => {
+        await RecordApi.addRecord(values.account_id,values.amount,values.type,values.currency,values.category, values.option,values.description).then(() => {
             onExpenseAdded();
             onClose(); 
         }).catch((err) => {
@@ -71,7 +70,6 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
 
     const handleCloseModal = () => {
         onClose(); 
-        // setUpdate(!updaterecords);
     }
     
     return (
