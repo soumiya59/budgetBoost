@@ -34,7 +34,6 @@ class RecordFactory extends Factory
                 return \App\Models\Account::factory()->create()->id;
             },
             'amount' => $this->faker->randomFloat(2, -1000, 1000),
-            'currency' => $this->faker->randomElement(['mad', 'usd', 'euro']),
             'type' => $this->faker->randomElement(['expense', 'income']),
             'category' => $category->type,
             'option' => $option,

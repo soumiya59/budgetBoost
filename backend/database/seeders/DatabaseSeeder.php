@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory(3)->create()->each(function ($user) {
-            // Seed for each user
             AccountFactory::new()->count(2)->create(['user_id' => $user->id]);
             GoalFactory::new()->count(2)->create(['user_id' => $user->id]);
             TransferFactory::new()->count(2)->create(['user_id' => $user->id]);
@@ -49,7 +48,6 @@ class DatabaseSeeder extends Seeder
             'user_id' => 25,
             'account_id' => 22,
             'amount' => 1000,
-            'currency' => 'mad',
             'type' => 'income',
             'category' => 'income',
             'option' => 'sale',

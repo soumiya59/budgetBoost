@@ -6,7 +6,7 @@ import AccountApi from '../services/api/AccountApi';
 import EditRecordModal from '../components/EditRecordModal';
 import swal from 'sweetalert';
 
-function Record({type, amount, currency, id, description, category, account_id ,fetchRecords}) {
+function Record({type, amount,  id, description, category, account_id ,fetchRecords}) {
   
   const [account, setAccount] = useState({});
   const [viewRecord, setViewRecord] = useState(false);
@@ -78,10 +78,10 @@ function Record({type, amount, currency, id, description, category, account_id ,
 
       <div className="ms-5 text-gray-800 text-end">
         {type=="income" ? 
-        <p><span className="uppercase text-green-800">{currency}</span>
+        <p><span className="uppercase text-green-800">{account.currency}</span>
           <span className="text-green-800"> +{amount}</span>  
         </p> :
-        <p><span className="uppercase text-red-800">{currency}</span>
+        <p><span className="uppercase text-red-800">{account.currency}</span>
           <span className='text-red-800'> -{amount}</span>
         </p>
         }

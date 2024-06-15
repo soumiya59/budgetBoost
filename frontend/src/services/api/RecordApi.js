@@ -1,9 +1,6 @@
 import {axiosClient} from '../../api/axios'; 
 
 const RecordApi = {
-    // getCsrf : async () => {
-    //     return await axiosClient.get('/sanctum/csrf-cookie')
-    // },
     getAllMyRecords : async () => {
         return await axiosClient.get('/myrecords/')
     },
@@ -16,20 +13,15 @@ const RecordApi = {
     deleteRecord : async (id) => {
         return await axiosClient.delete('/records/'+id)
     },
-    editRecord : async (id, account_id, amount,type,currency,category,option,description) => {
-        return await axiosClient.put('/records/'+id,{account_id,amount,type,currency,category,option,description})
+    editRecord : async (id, account_id, amount,type,category,option,description) => {
+        return await axiosClient.put('/records/'+id,{account_id,amount,type,category,option,description})
     },
-    addRecord : async (account_id,amount,type,currency,category,option,description) => {
-        return await axiosClient.post('/records',{account_id,amount,type,currency,category,option,description})
+    addRecord : async (account_id,amount,type,category,option,description) => {
+        return await axiosClient.post('/records',{account_id,amount,type,category,option,description})
     },
-    // searchRecords : async (query) => {
-    //     return await axiosClient.get('/records/search/',{query})
-    // },
     searchRecords: async (query) => {
-    // return await axiosClient.get('/records/search/', { params: { query } })
-    return await axiosClient.get('/records/search/'+query)
+        return await axiosClient.get('/records/search/'+query)
     },
-
     getCategories : async () => {
         return await axiosClient.get('/categories')
     }

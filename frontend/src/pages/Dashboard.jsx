@@ -106,7 +106,7 @@ function Dashboard() {
                       </div>
 
                       <div className='ms-5 text-lg flex-grow text-end'>
-                        {accounts.find(acc=>acc.id === parseInt(record.account_id)).type=="income" ? 
+                        {record.type==="income" ? 
                         <p><span className="uppercase text-green-800">{record.currency}</span>
                           <span className="text-green-800"> +{record.amount}</span>  
                         </p> :

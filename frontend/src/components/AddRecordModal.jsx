@@ -14,7 +14,6 @@ const formSchema = z.object({
     account_id:z.coerce.number(),
     type:z.string(),
     amount: z.coerce.number().min(0),
-    currency:z.string(),
     category:z.string(),
     option:z.string(),
     description:z.string()
@@ -32,7 +31,6 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
             account_id:0,
             type: "expense",
             amount: 0,
-            currency: "mad",
             category: "",
             option: "",
             description: "",
@@ -60,7 +58,7 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
     }, []);
 
     async function onSubmit(values) {
-        await RecordApi.addRecord(values.account_id,values.amount,values.type,values.currency,values.category, values.option,values.description).then(() => {
+        await RecordApi.addRecord(values.account_id,values.amount,values.type,values.category, values.option,values.description).then(() => {
             onExpenseAdded();
             onClose(); 
         }).catch((err) => {
@@ -128,28 +126,6 @@ function AddRecordModal({ onClose, onExpenseAdded }) {
                                 <FormControl>
                                     <Input placeholder="0" {...field} type='number' />
                                 </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="currency"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Currency</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select a currency" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="mad">MAD</SelectItem>
-                                        <SelectItem value="usd">USD</SelectItem>
-                                        <SelectItem value="euro">EURO</SelectItem>
-                                    </SelectContent>
-                                </Select>
                                 <FormMessage />
                             </FormItem>
                         )}

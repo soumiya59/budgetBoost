@@ -9,6 +9,8 @@ function Records() {
   const [showModal, setShowModal] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const sortedRecords = records.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
 
   useEffect(() => {
     fetchRecords();
@@ -74,14 +76,13 @@ function Records() {
           </div>
 
           <div>
-          {(searchTerm ? searchData : records).map((item) => (
+          {(searchTerm ? searchData : sortedRecords).map((item) => (
             <Record
               key={item.id}
               id={item.id}
               type={item.type}
               description={item.description}
               amount={item.amount}
-              currency={item.currency}
               category={item.category}
               account_id={item.account_id}
               fetchRecords={fetchRecords}

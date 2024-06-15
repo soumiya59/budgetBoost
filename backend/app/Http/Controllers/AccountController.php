@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Record;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,38 @@ class AccountController extends Controller
     {
         $user = Auth::user();
         $account = $user->accounts()->find($id);
+        if (!$account) {
+            return response()->json(['message' => 'Account not found'], 404);
+        }
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'currency' => 'required|string|in:mad,usd,euro',
+            'balance' => 'required|numeric|min:0',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+        $difference = $request->balance - $account->balance;
+
         $account->update($request->all());
+
+        if ($difference != 0) {
+        try {
+            $recordData = [
+                'user_id' => $account->user_id,
+                'account_id' => $account->id,
+                'amount' => abs($difference),
+                'type' => $difference > 0 ? 'income' : 'expense',
+                'category' => $difference > 0 ? 'income' : 'others',
+                'option' => $difference > 0 ? 'others' : 'missing',
+                'description' => 'Balance adjustement',
+            ];
+            Record::create($recordData);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error creating record: ' . $e->getMessage()], 500);
+        }
+        }
+    
         return response()->json(['account' => $account], 200);
     }
     
@@ -126,32 +158,44 @@ class AccountController extends Controller
 
     public function update(Request $request, $id)
     {
-        $account = Account::find($id);
+        $user = Auth::user();
+        $account = $user->accounts()->find($id);
 
-        if (!$account) {
-            return response()->json(['message' => 'Account not found'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'currency' => 'required|string|in:mad,usd,euro',
-            'balance' => 'required|numeric|min:0',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
-        $account->update([
-            'user_id' => $request->user_id,
-            'name' => $request->name,
-            'currency' => $request->currency,
-            'balance' => $request->balance,
-        ]);
-
-        return response()->json(['account' => $account], 200);
+    if (!$account) {
+        return response()->json(['message' => 'Account not found'], 404);
     }
+
+    $validator = Validator::make($request->all(), [
+        'user_id' => 'required|string|max:255',
+        'name' => 'required|string|max:255',
+        'currency' => 'required|string|in:mad,usd,euro',
+        'balance' => 'required|numeric|min:0',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 400);
+    }
+
+    $difference = $request->balance - $account->balance;
+
+        $account->update($request->all());
+
+    if ($difference != 0) {
+        $recordData = [
+            'account_id' => $account->id,
+            'amount' => abs($difference),
+            'currency' => $account->currency,
+            'type' => $difference > 0 ? 'income' : 'expense',
+            'category' => $difference > 0 ? 'income' : 'missing',
+            'description' => 'Balance adjustment'
+        ];
+
+        Record::create($recordData);
+    }
+
+    return response()->json(['account' => $account], 200);
+    }
+
 
     public function destroy($id)
     {

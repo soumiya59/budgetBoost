@@ -15,7 +15,6 @@ const formSchema = z.object({
     account_id:z.coerce.number(),
     type:z.string(),
     amount: z.coerce.number(),
-    currency:z.string(),
     category:z.string(),
     option:z.string(),
     description:z.string().nullable(),
@@ -25,7 +24,7 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
     const [record, setRecord] = useState([]);
     const [categories, setCategories] = useState([]);
     const [accounts, setAccounts] = useState([]);
-    const [account, setAccount] = useState({});
+    // const [account, setAccount] = useState({});
     const [initialAccountName, setInitialAccountName] = useState("");
 
 
@@ -36,7 +35,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
             // accountName:"",
             type: "",
             amount: 0,
-            currency: "",
             category: "",
             option: "",
             description: " ",
@@ -67,7 +65,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                         form.setValue("account_id", fetchedRecord.account_id);
                         form.setValue("type", fetchedRecord.type);
                         form.setValue("amount", fetchedRecord.amount);
-                        form.setValue("currency", fetchedRecord.currency);
                         form.setValue("category", fetchedRecord.category);
                         form.setValue("option", fetchedRecord.option);
                         form.setValue("description", fetchedRecord.description);
@@ -83,7 +80,7 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
 
 
     async function onSubmit(values) {
-        await RecordApi.editRecord(id,values.account_id,values.amount,values.type, values.currency, values.category,values.option, values.description ).then(() => {
+        await RecordApi.editRecord(id,values.account_id,values.amount,values.type,values.category,values.option, values.description ).then(() => {
             onRecordEdited();
             onClose(); 
         }).catch((err) => {
@@ -147,28 +144,6 @@ function EditRecordModal({ id,onClose , onRecordEdited, onRecordDeleted}) {
                                 <FormControl>
                                     <Input placeholder="0" {...field} defaultValue={field.value} type='number' />
                                 </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="currency"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Currency</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder={field.value} />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="mad">MAD</SelectItem>
-                                        <SelectItem value="usd">USD</SelectItem>
-                                        <SelectItem value="euro">EURO</SelectItem>
-                                    </SelectContent>
-                                </Select>
                                 <FormMessage />
                             </FormItem>
                         )}

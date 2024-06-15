@@ -35,7 +35,6 @@ class RecordController extends Controller
             $records = $userRecords->where(function($query) use ($searchTerm) {
                $query->where('amount', 'like', '%'.$searchTerm.'%')
                     ->orWhere('type', 'like', '%'.$searchTerm.'%')
-                    ->orWhere('currency', 'like', '%'.$searchTerm.'%')
                     ->orWhere('category', 'like', '%'.$searchTerm.'%')
                     ->orWhere('option', 'like', '%'.$searchTerm.'%')
                     ->orWhere('description', 'like', '%'.$searchTerm.'%');
@@ -59,7 +58,6 @@ class RecordController extends Controller
         $validator = Validator::make($request->all(), [
             'account_id' => 'required|max:255',
             'amount' => 'required|numeric|min:0',
-            'currency'=>'required|string',
             'category' => 'required|string',
             'option' => 'required|string',
             'description' => 'nullable|string|max:255',
@@ -74,7 +72,6 @@ class RecordController extends Controller
             'category' => $request->category,
             'option' => $request->option,
             'amount' => $request->amount,
-            'currency'=>$request->currency,
             'description' => $request->description,
             'type'=>$request->type
         ]);
@@ -108,7 +105,6 @@ class RecordController extends Controller
             'account_id' => 'required|numeric|min:0',
             'amount' => 'required|numeric|min:0',
             'type'=> 'required|string',
-            'currency'=>'required|string',
             'category' => 'required|string',
             'option' => 'required|string',
             'description' => 'nullable|string|max:255'
@@ -124,7 +120,6 @@ class RecordController extends Controller
             'account_id' => $request->account_id,
             'amount' => $request->amount,
             'type'=>$request->type,
-            'currency'=>$request->currency,
             'category' => $request->category,
             'option' => $request->option,
             'description' => $request->description
@@ -136,15 +131,12 @@ class RecordController extends Controller
     public function destroy($id)
     {
         $record = Record::find($id);
-        // $lastRecord = record::latest()->first()->amount;
-
         if (!$record) {
             return response()->json(['message' => 'Record not found'], 404);
         }
 
         $record->account->revertBalance($record->amount, $record->type);
         $record->delete();
-        // $record->account->updateBalance($lastRecord, $record->type, isDelete: true);
         return response()->json(['message' => 'Record deleted successfully'], 200);
     }
 }

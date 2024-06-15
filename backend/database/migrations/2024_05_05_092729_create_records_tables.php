@@ -18,7 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreignId('account_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
-            $table->string('currency');
             $table->enum('type', ['expense', 'income']);
             // id catgory
             $table->string('category');
