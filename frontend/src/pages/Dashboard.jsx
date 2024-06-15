@@ -68,7 +68,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className='h-screen max-w-screen-xl mx-auto'>
+      <div className="max-w-screen-xl h-screen mx-auto px-6 ">
         <div className="flex flex-wrap items-center justify-start py-6 border-b-2 border-slate-400 pt-10">
             {accounts.map((item) => (
               <Account key={item.id} type={item.name} balance={item.balance} currency={item.currency} id={item.id}/>

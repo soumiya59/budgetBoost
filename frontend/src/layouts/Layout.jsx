@@ -81,10 +81,10 @@ function Layout() {
           <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
 
           <Link to="/">
-            <p className="flex items-center space-x-3 space-y-2 rtl:space-x-reverse">
-              <img src="/logo.svg" className="h-8" alt="" />
-              <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-mat-green font-mono">BudgetBoost</span>
-            </p>
+            {/* <p className="flex items-center space-x-3 space-y-2 rtl:space-x-reverse"> */}
+              <img src="/logo2.png" className="h-10 saturate-1" alt="" />
+              {/* <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-mat-green font-mono">BudgetBoost</span> */}
+            {/* </p> */}
           </Link> 
           <div className="relative flex items-center justify-around md:order-2 space-x-3 md:space-x-4 rtl:space-x-reverse">       
           
