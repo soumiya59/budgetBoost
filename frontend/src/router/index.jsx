@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout';
 import Dashboard from '../pages/Dashboard';
 import Accounts from '../pages/Accounts';
 import AccountView from '../pages/AccountView';
+import GoalView from '../pages/GoalView';
 import Records from '../pages/Records';
 import Pricing from '../pages/Pricing';
 import Goals from '../pages/Goals';
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
             {
                 path:'/goals',    
                 element: <Goals/>
+            },
+            {
+                path:'/goals/:id',
+                element: <GoalView/>
             },
             {
                 path:'*',

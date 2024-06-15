@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Account;
 use App\Models\Record;
+use App\Models\Goal;
 use Database\Factories\IncomeFactory;
 use Database\Factories\ExpenseFactory;
 use Database\Factories\AccountFactory;
@@ -53,6 +54,15 @@ class DatabaseSeeder extends Seeder
             'category' => 'income',
             'option' => 'sale',
             'description' => 'admin initial balance',
+        ]);
+        Goal::factory()->create([
+            'user_id' => 25,
+            'name' => 'New Car',
+            'target_amount' => 1000,
+            'current_amount' => 100,
+            'last_added_amount' => 10,
+            'completion_date' => '2024-10-10',
+            'description' => 'first goal',
         ]);
     }
 }

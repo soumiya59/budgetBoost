@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Goal extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','name', 'target_amount', 'current_amount', 'completion_date' ,'description'];
+    protected $fillable = ['user_id','name', 'target_amount', 'current_amount', 'last_added_amount','completion_date','description'];
 
     // Define relationship
     public function user()

@@ -28,35 +28,24 @@ class AccountController extends Controller
     }
     public function getUserAccountById(Request $request, $id)
     {
-        // Retrieve the authenticated user
         $user = Auth::user();
-        
-        // Retrieve the account associated with the user
         $account = $user->accounts()->find($id);
-
-        // Return the account as JSON response
         return response()->json(['account' => $account], 200);
     }
+    
     public function deleteAccountById(Request $request, $id)
     {
-        // Retrieve the authenticated user
         $user = Auth::user();
-        // Retrieve the account associated with the user
         $account = $user->accounts()->find($id);
-        // Delete the account
         $account->delete();
-        // Return a success message
         return response()->json(['message' => 'Account deleted successfully'], 200);
     }
+    
     public function editAccount(Request $request, $id)
     {
-        // Retrieve the authenticated user
         $user = Auth::user();
-        // Retrieve the account associated with the user
         $account = $user->accounts()->find($id);
-        // Update the account
         $account->update($request->all());
-        // Return the updated account
         return response()->json(['account' => $account], 200);
     }
     

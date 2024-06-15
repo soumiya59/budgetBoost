@@ -48,7 +48,7 @@ function Accounts() {
           <br />
           <div>
             {accounts.map((item) => (
-              <Account key={item.id} type={item.name} balance={item.balance} currency={item.currency} id={item.id}/>
+              <Account key={item.id} name={item.name} balance={item.balance} currency={item.currency} id={item.id}/>
             ))}
           </div>
         </div>

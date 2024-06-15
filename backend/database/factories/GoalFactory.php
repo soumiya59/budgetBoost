@@ -28,6 +28,7 @@ class GoalFactory extends Factory
             'name' => $this->faker->randomElement(['Car', 'House', 'Vacation', 'Education', 'Business', 'Health', 'Charity', 'Other']),
             'target_amount' => $this->faker->randomFloat(2, 100, 10000),
             'current_amount' => $this->faker->randomFloat(2, 10, 1000),
+            'last_added_amount' => $this->faker->randomFloat(2, 10, 1000),
             'completion_date' => $this->faker->dateTimeBetween('now', '+1 year'),
             'description' => $this->faker->sentence,
         ];

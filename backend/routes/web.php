@@ -62,21 +62,18 @@ Route::put('/accounts/{id}', [AccountController::class, 'update']);
 Route::get('/accounts/search', [AccountController::class, 'search']);
 Route::delete('/accounts/{id}', [AccountController::class, 'destroy']);
 
-// Income routes
-Route::get('/incomes', [IncomeController::class, 'index']);
-Route::get('/myincomes', [IncomeController::class, 'getUserIncomes']);
-Route::post('/addincome', [IncomeController::class, 'addIncome']);
-Route::post('/incomes', [IncomeController::class, 'store']);
-Route::get('/incomes/{id}', [IncomeController::class, 'show']);
-Route::put('/incomes/{id}', [IncomeController::class, 'update']);
-Route::delete('/incomes/{id}', [IncomeController::class, 'destroy']);
-
-// Expense routes
-Route::get('/expenses', [ExpenseController::class, 'index']);
-Route::post('/expenses', [ExpenseController::class, 'store']);
-Route::get('/expenses/{id}', [ExpenseController::class, 'show']);
-Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
-Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
+// Route::get('/incomes', [IncomeController::class, 'index']);
+// Route::get('/myincomes', [IncomeController::class, 'getUserIncomes']);
+// Route::post('/addincome', [IncomeController::class, 'addIncome']);
+// Route::post('/incomes', [IncomeController::class, 'store']);
+// Route::get('/incomes/{id}', [IncomeController::class, 'show']);
+// Route::put('/incomes/{id}', [IncomeController::class, 'update']);
+// Route::delete('/incomes/{id}', [IncomeController::class, 'destroy']);
+// Route::get('/expenses', [ExpenseController::class, 'index']);
+// Route::post('/expenses', [ExpenseController::class, 'store']);
+// Route::get('/expenses/{id}', [ExpenseController::class, 'show']);
+// Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
+// Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
 
 // Transfer routes
 Route::get('/transfers', [TransferController::class, 'index']);
@@ -87,6 +84,11 @@ Route::delete('/transfers/{id}', [TransferController::class, 'destroy']);
 
 // Goal routes
 Route::get('/goals', [GoalController::class, 'index']);
+Route::get('/mygoals', [GoalController::class, 'getUserGoals']);
+Route::post('/addgoal', [GoalController::class, 'addGoalToUser']);
+Route::post('/addamount', [GoalController::class, 'addAmountToGoal']);
+route::delete('/mygoals/{id}', [GoalController::class, 'deleteGoalById']);
+Route::put('/mygoals/{id}', [GoalController::class, 'editGoal']);
 Route::post('/goals', [GoalController::class, 'store']);
 Route::get('/goals/{id}', [GoalController::class, 'show']);
 Route::put('/goals/{id}', [GoalController::class, 'update']);

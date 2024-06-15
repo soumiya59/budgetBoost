@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('target_amount', 10, 2);
             $table->decimal('current_amount', 10, 2);
+            $table->decimal('last_added_amount', 10, 2);
             $table->date('completion_date');
             $table->text('description')->nullable();
             $table->timestamps();
