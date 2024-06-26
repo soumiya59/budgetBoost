@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Account from '../components/Account';
 import AccountApi from '../services/api/AccountApi';
-import EditAccountModal from '../components/EditAccountModal';
+import EditAccountModal from '../components/modals/EditAccountModal';
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 

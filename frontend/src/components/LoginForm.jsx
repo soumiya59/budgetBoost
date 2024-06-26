@@ -80,7 +80,7 @@ function LoginForm() {
                 </FormItem>
             )}
             />
-            <Button type="submit" className="bg-mat-green text-white font-bold text-lg hover:bg-bold-green p-2 mt-8">Submit</Button>
+            <Button type="submit" className=" bg-blue1 text-white font-bold text-lg hover:bg-light-blue1 p-2 mt-8">Submit</Button>
         </form>
         </Form>
     )

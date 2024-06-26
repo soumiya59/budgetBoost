@@ -10,11 +10,11 @@ const GoalApi = {
     deleteGoal : async (id) => {
         return await axiosClient.delete('/mygoals/'+id)
     },
-    editGoal : async (id,name,target_amount,currect_amount,completion_date,description) => {
-        return await axiosClient.put('/mygoals/'+id,{name,target_amount,currect_amount,completion_date,description})
+    editGoal : async (id,name,target_amount,current_amount,completion_date) => {
+        return await axiosClient.put('/goals/'+id,{name,target_amount,current_amount,completion_date})
     },
-    addGoal : async (name,target_amount,currect_amount,completion_date,description) => {
-        return await axiosClient.post('/addgoal',{name,target_amount,currect_amount,completion_date,description})
+    addGoal : async (name,target_amount,current_amount,completion_date) => {
+        return await axiosClient.post('/addgoal',{name,target_amount,current_amount,completion_date})
     },
     addamount : async (goalId,amount) => {
         return await axiosClient.put('/addamount',{goalId,amount})

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import AccountApi from '../services/api/AccountApi'; 
+import AccountApi from '../../services/api/AccountApi'; 
 
 const formSchema = z.object({
   name: z.string().min(2).max(30),
@@ -14,7 +14,7 @@ const formSchema = z.object({
   currency: z.string().min(3).max(9),
 });
 
-function AddGoalModal({ onClose, onAccountAdded }) {
+function AddAccountModal({ onClose, onAccountAdded }) {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -110,4 +110,4 @@ function AddGoalModal({ onClose, onAccountAdded }) {
     );
 }
 
-export default AddGoalModal;
+export default AddAccountModal;

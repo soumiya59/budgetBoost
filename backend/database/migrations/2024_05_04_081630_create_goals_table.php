@@ -19,9 +19,8 @@ return new class extends Migration
             $table->decimal('current_amount', 10, 2);
             $table->decimal('last_added_amount', 10, 2);
             $table->date('completion_date');
-            $table->text('description')->nullable();
+            // $table->text('description')->nullable();
             $table->timestamps();
-
             // Define foreign key constraint
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

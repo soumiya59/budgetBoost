@@ -16,7 +16,7 @@ const formSchema = z.object({
 
 function RegisterForm() {
 
-    const {setAuthenticated,setUser,setToken,register} = useUserContext();
+    const {setAuthenticated,register} = useUserContext();
     const navigate = useNavigate();
 
     const form = useForm({
@@ -88,20 +88,7 @@ function RegisterForm() {
                 </FormItem>
             )}
             />
-            {/* <FormField
-            control={form.control}
-            name="passwordConfirmation"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Confirm password</FormLabel>
-                <FormControl>
-                    <Input placeholder="password" {...field} />
-                </FormControl>
-                <FormMessage />
-                </FormItem>
-            )}
-            /> */}
-            <Button type="submit" className="bg-mat-green text-white font-bold text-lg hover:bg-bold-green p-2 mt-8">Register</Button>
+            <Button type="submit" className="bg-blue1 text-white font-bold text-lg hover:bg-light-blue1 p-2 mt-8">Register</Button>
         </form>
         </Form>
     )

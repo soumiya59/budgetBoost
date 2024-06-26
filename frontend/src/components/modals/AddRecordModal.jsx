@@ -7,8 +7,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from 
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { useState,useEffect } from "react";
-import RecordApi from '../services/api/RecordApi'; 
-import AccountApi from "../services/api/AccountApi";
+import RecordApi from '../../services/api/RecordApi'; 
+import AccountApi from "../../services/api/AccountApi";
 
 const formSchema = z.object({
     account_id:z.coerce.number(),

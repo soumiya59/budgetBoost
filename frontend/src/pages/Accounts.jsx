@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Account from '../components/Account';
 import AccountApi from '../services/api/AccountApi';
-import AddAccountModal from '../components/AddAccountModal';
+import AddAccountModal from '../components/modals/AddAccountModal';
 import swal from 'sweetalert';
 
 

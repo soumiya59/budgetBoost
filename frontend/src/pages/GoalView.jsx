@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Account from '../components/Account';
-import AccountApi from '../services/api/AccountApi';
-import EditAccountModal from '../components/EditAccountModal';
+import Goal from '../components/Goal';
+import GoalApi from '../services/api/GoalApi';
+import EditGoalModal from '../components/modals/EditGoalModal';
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
-function AccountView() {
-  const [account, setAccount] = useState([]);
+function GoalView() {
+  const [goal, setGoal] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate()
   const { id } = useParams();
 
   useEffect(() => {
-    fetchAccount();
+    fetchGoal();
   }, []);
 
-  const fetchAccount = ()=>{
-    AccountApi.getAccount(id)
+  const fetchGoal = ()=>{
+    GoalApi.getGoal(id)
       .then(({ data }) => {
-        setAccount(data.account);
+        setGoal(data.goal);
       })
       .catch((err) => {
         console.log(err);
@@ -34,26 +34,27 @@ function AccountView() {
   }
 
   const deleteAcc = () => {
-    AccountApi.deleteAccount(id)
+    GoalApi.deleteGoal(id)
       .then(({ data }) => {
         console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
-      swal("Account Deleted successfully!");
-      navigate('/accounts')
+      swal("Goal Deleted successfully!");
+      navigate('/goals')
   }
-  const handleAccountEdited = () => {
+  const handleGoalEdited = () => {
     setShowModal(false);
-    swal("Account Edited successfully!");
-    fetchAccount();
+    swal("Goal Edited successfully!");
+    fetchGoal();
   }
 
 
   return (
     <>
-        <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto p-6 pt-10">
+        {/* <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto p-6 pt-10"> */}
+        <div className="max-w-screen-xl h-screen flex-wrap items-center mx-auto pt-10 ps-5">
           <div className='flex justify-end '>
             <button
               onClick={edit}
@@ -69,15 +70,15 @@ function AccountView() {
             </button>
           </div>
           <br />
-          <div>
-            <Account key={account.id} type={account.name} balance={account.balance} currency={account.currency} id={account.id}/>
+          <div className='me-5'>
+            <Goal key={goal.id} type={goal.name} balance={goal.balance} currency={goal.currency} idGoal={goal.id}/>
           </div>
         </div>
       {showModal &&  (
-        <EditAccountModal onClose={handleCloseModal} onAccountEdited={handleAccountEdited} />
+        <EditGoalModal onClose={handleCloseModal} onGoalEdited={handleGoalEdited} />
       )}
     </>
   );
 }
 
-export default AccountView;
+export default GoalView;

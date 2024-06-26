@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import RecordApi from '../services/api/RecordApi';
 import AccountApi from '../services/api/AccountApi';
-import EditRecordModal from '../components/EditRecordModal';
+import EditRecordModal from '../components/modals/EditRecordModal';
 import swal from 'sweetalert';
 
 function Record({type, amount,  id, description, category, account_id ,fetchRecords}) {

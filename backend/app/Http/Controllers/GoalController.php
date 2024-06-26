@@ -28,13 +28,6 @@ class GoalController extends Controller
         $goal->delete();
         return response()->json(['message' => 'Goal deleted successfully'], 200);
     }
-    public function editGoal(Request $request, $id)
-    {
-        $user = Auth::user();
-        $goal = $user->goals()->find($id);
-        $goal->update($request->all());
-        return response()->json(['goal' => $goal], 200);
-    }
     public function addGoalToUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -53,7 +46,6 @@ class GoalController extends Controller
             'current_amount' => $request->current_amount,
             'last_added_amount' => $request->current_amount,
             'completion_date' => $request->completion_date,
-            'description' => $request->description,
         ]);
         $user->goals()->save($goal);
         return response()->json(['goal' => $goal], 201);
@@ -81,7 +73,6 @@ class GoalController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
             'target_amount' => 'required|numeric|min:0',
             'current_amount' => 'required|numeric|min:0',
             'completion_date' => 'required|date',
@@ -94,7 +85,6 @@ class GoalController extends Controller
         $goal = Goal::create([
             'user_id' => $request->user_id,
             'name' => $request->name,
-            'description' => $request->description,
             'target_amount' => $request->target_amount,
             'current_amount' => $request->current_amount,
             'last_added_amount' => $request->current_amount, 
@@ -118,33 +108,17 @@ class GoalController extends Controller
     public function update(Request $request, $id)
     {
         $goal = Goal::find($id);
-
         if (!$goal) {
             return response()->json(['message' => 'Goal not found'], 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
-            'target_amount' => 'required|numeric|min:0',
-            'current_amount' => 'required|numeric|min:0',
-            'completion_date' => 'required|date',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
         $goal->update([
-            'user_id' => $request->user_id,
             'name' => $request->name,
             'target_amount' => $request->target_amount,
             'current_amount' => $request->current_amount,
             'completion_date' => $request->completion_date,
-            'description' => $request->description,
+            'last_added_amount' => $request->current_amount,
         ]);
-
         return response()->json(['goal' => $goal], 200);
     }
 

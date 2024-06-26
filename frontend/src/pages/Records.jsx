@@ -1,19 +1,31 @@
 import { useState, useEffect } from 'react';
 import Record from '../components/Record';
 import RecordApi from '../services/api/RecordApi';
-import AddRecordModal from '../components/AddRecordModal';
+import AddRecordModal from '../components/modals/AddRecordModal';
 import swal from 'sweetalert';
+import AccountApi from '../services/api/AccountApi';
 
 function Records() {
   const [records, setRecords] = useState([]);
+  const [accounts, setAccounts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [searchData, setSearchData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const sortedRecords = records.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
+  const totalExpenses = records
+    .filter(record => record.type === "expense")
+    .reduce((total, record) => total + parseFloat(record.amount), 0);
+
 
   useEffect(() => {
     fetchRecords();
+    // AccountApi.getAccounts().then(({data})=> setAccounts(data.accounts))
+    AccountApi.getAccounts().then(({data})=>{
+      setAccounts(data.accounts)
+    }).catch((err)=>{
+      console.log(err)
+    })
   }, []);
 
   const fetchRecords = () => {
@@ -73,6 +85,9 @@ function Records() {
             >
               Add Record
             </button>
+          </div>
+          <div className='text-slate-300 text-end '>
+            <p>- {totalExpenses} <span className='uppercase'>{accounts[0]?.currency}</span></p>
           </div>
 
           <div>

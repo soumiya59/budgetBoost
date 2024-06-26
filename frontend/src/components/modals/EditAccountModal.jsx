@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import AccountApi from '../services/api/AccountApi'; 
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import AccountApi from '../../services/api/AccountApi'; 
 
 const formSchema = z.object({
   name: z.string().min(2).max(30),
@@ -14,28 +16,43 @@ const formSchema = z.object({
   currency: z.string().min(3).max(9),
 });
 
-function AddAccountModal({ onClose, onAccountAdded }) {
+function EditAccountModal({ onClose , onAccountEdited}) {
+    const [account, setAccount] = useState([]);
+    const { id } = useParams();
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "general",
+            name: "", // Initial values are empty
             balance: 0,
-            currency: "mad",
+            currency: "",
         },
     });
+    
+  useEffect(() => {
+        AccountApi.getAccount(id)
+        .then(({ data }) => {
+            form.setValue("name", data.account.name);
+            form.setValue("balance", data.account.balance);
+            form.setValue("currency", data.account.currency);
+            setAccount(data.account);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+  }, []);
 
     async function onSubmit(values) {
-        try {
-            const response = await AccountApi.addAccount(values.name, values.currency, values.balance);
-            if (response.status === 201) {
-                onAccountAdded();
-                onClose(); 
-            }
-        } catch (err) {
+        await AccountApi.editAccount(id, values.name, values.currency, values.balance).then(({ data }) => {
+            console.log(data);
+        }).catch((err) => {
             console.log(err);
-        }
+        });
+        onAccountEdited();
+        onClose(); 
     }
 
+    
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <Form {...form}>
@@ -49,7 +66,7 @@ function AddAccountModal({ onClose, onAccountAdded }) {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select an account type" />
+                                            <SelectValue placeholder={field.value} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -87,7 +104,7 @@ function AddAccountModal({ onClose, onAccountAdded }) {
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select a currency" />
+                                            <SelectValue placeholder={field.value} />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -107,7 +124,7 @@ function AddAccountModal({ onClose, onAccountAdded }) {
                 </form>
             </Form>
         </div>
-    );
+    )
 }
 
-export default AddAccountModal;
+export default EditAccountModal;

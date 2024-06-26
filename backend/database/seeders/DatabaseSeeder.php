@@ -30,8 +30,6 @@ class DatabaseSeeder extends Seeder
         });
         Account::factory(3)->create()->each(function ($account){
             RecordFactory::new()->count(2)->create(['account_id' => $account->id]);
-            // IncomeFactory::new()->count(2)->create(['account_id' => $account->id]);
-            // ExpenseFactory::new()->count(2)->create(['account_id' => $account->id]);
         });
         User::factory()->create([
             'name' => 'admin',
@@ -60,7 +58,6 @@ class DatabaseSeeder extends Seeder
             'current_amount' => 100,
             'last_added_amount' => 10,
             'completion_date' => '2024-10-10',
-            'description' => 'first goal',
         ]);
     }
 }

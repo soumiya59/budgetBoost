@@ -6,11 +6,8 @@ function Register() {
             <section className="bg-light-grey font-family-karla h-screen">
             <div className="w-full flex flex-wrap">
                 <div className="w-full md:w-1/2 flex flex-col">
-                    <div className="flex justify-center md:justify-center pt-12 md:pl-12 md:-mb-12">
-                        <a href="#" className="flex items-center space-x-3 space-y-2 rtl:space-x-reverse">
-                            <img src="logo.svg" className="h-14" alt="" />
-                            <span className="self-center text-5xl font-semibold whitespace-nowrap dark:text-mat-green font-mono">BudgetBoost</span>
-                        </a>
+                    <div className="flex justify-center pt-12  md:-mb-12">
+                        <img src="logo2.png" alt="logo" />
                     </div>
                     <div className="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
                         <p className="text-center text-3xl">Join Us.</p>
