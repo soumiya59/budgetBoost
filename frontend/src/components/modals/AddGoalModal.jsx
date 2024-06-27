@@ -12,6 +12,7 @@ const formSchema = z.object({
   target_amount: z.coerce.number().min(0),
   current_amount: z.coerce.number().min(0),
   completion_date: z.string(),
+  currency: z.string(),
 });
 
 function AddGoalModal({ onClose, onGoalAdded }) {
@@ -22,12 +23,13 @@ function AddGoalModal({ onClose, onGoalAdded }) {
             target_amount: 0,
             current_amount: 0,
             completion_date: new Date(),
+            currency: "mad",
         },
     });
 
     async function onSubmit(values) {
         try {
-            const response = await GoalApi.addGoal(values.name,values.target_amount,values.current_amount,values.completion_date);
+            const response = await GoalApi.addGoal(values.name,values.target_amount,values.current_amount,values.completion_date,values.currency);
             if (response.status === 201) {
                 onGoalAdded();
                 onClose(); 
@@ -88,6 +90,19 @@ function AddGoalModal({ onClose, onGoalAdded }) {
                                 <FormLabel>Completion Date</FormLabel>
                                 <FormControl>
                                     <Input {...field} type='date' />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="currency"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Currency</FormLabel>
+                                <FormControl>
+                                    <Input {...field} placeholder='Your saving goal'/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

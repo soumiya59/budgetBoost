@@ -31,6 +31,7 @@ class GoalFactory extends Factory
             'last_added_amount' => $this->faker->randomFloat(2, 10, 1000),
             'completion_date' => $this->faker->dateTimeBetween('now', '+1 year'),
             'status' => 'in progress',
+            'currency' => 'mad',
         ];
     }
 }

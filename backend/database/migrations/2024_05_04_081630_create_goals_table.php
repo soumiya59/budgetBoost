@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('last_added_amount', 10, 2);
             $table->date('completion_date');
             $table->enum('status', ['in progress', 'completed']);
+            $table->string('currency');
             // $table->text('description')->nullable();
             $table->timestamps();
             // Define foreign key constraint

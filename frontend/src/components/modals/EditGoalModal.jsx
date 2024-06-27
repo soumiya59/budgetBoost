@@ -13,7 +13,8 @@ const formSchema = z.object({
     name:z.string(),
     target_amount:z.coerce.number(),
     current_amount:z.coerce.number(),
-    completion_date:z.string()
+    completion_date:z.string(),
+    currency:z.string()
 });
 
 function EditGoalModal({ id,onClose , onGoalEdited, onGoalDeleted}) {
@@ -26,6 +27,7 @@ function EditGoalModal({ id,onClose , onGoalEdited, onGoalDeleted}) {
             target_amount: 0,
             current_amount: 0,
             completion_date: new Date(),
+            currency: "mad",
         },
     });
 
@@ -36,6 +38,7 @@ function EditGoalModal({ id,onClose , onGoalEdited, onGoalDeleted}) {
             form.setValue("target_amount", response.data.goal.target_amount);
             form.setValue("current_amount", response.data.goal.current_amount);
             form.setValue("completion_date", response.data.goal.completion_date);
+            form.setValue("currency", response.data.goal.currency);
         }
         ).catch((err) => {
             console.log(err);
@@ -44,7 +47,7 @@ function EditGoalModal({ id,onClose , onGoalEdited, onGoalDeleted}) {
     }, []);
 
     async function onSubmit(values) {
-        await GoalApi.editGoal(id,values.name,values.target_amount,values.current_amount,values.completion_date,).then(() => {
+        await GoalApi.editGoal(id,values.name,values.target_amount,values.current_amount,values.completion_date,values.currency).then(() => {
             onGoalEdited();
             onClose(); 
         }).catch((err) => {
@@ -103,6 +106,19 @@ function EditGoalModal({ id,onClose , onGoalEdited, onGoalDeleted}) {
                                 <FormLabel>Completion Date</FormLabel>
                                 <FormControl>
                                     <Input {...field} type='date' />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="currency"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Currency</FormLabel>
+                                <FormControl>
+                                    <Input {...field}/>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

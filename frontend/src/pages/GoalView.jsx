@@ -77,10 +77,11 @@ function GoalView() {
 
           <div className='flex justify-center text-indigo-600 mt-14'>
             <div className="radial-progress" style={{ "--value": "70", "--size": "16rem", "--thickness": "2rem" }} role="progressbar">70%</div>
-            <div className='ms-10 self-center text-slate-400 text-lg'>
-              <p>Current amount : {goal.current_amount} {goal.currency}</p>
-              <p>Amount needed to reach goal : {amountNeeded} {goal.currency}</p>
-              <p>Last added amount : {goal.last_added_amount} {goal.currency}</p>
+            <div className='ms-14 self-center text-slate-400 text-lg '>
+              <p className='py-3 '>Current amount : <span className=' text-slate-300'>{goal.current_amount} <span className='uppercase'>{goal.currency}</span></span> </p>
+              <p className='py-3 '>Target amount : <span className=' text-slate-300'>{goal.target_amount} <span className='uppercase'>{goal.currency}</span></span> </p>
+              <p className='py-3 '>Amount needed to reach goal : <span className=' text-slate-300'>{amountNeeded}  <span className='uppercase'>{goal.currency}</span></span></p>
+              <p className='py-3 '>Last added amount : <span className=' text-slate-300'>{goal.last_added_amount} <span className='uppercase'>{goal.currency}</span></span></p>
             </div>
           </div>
             

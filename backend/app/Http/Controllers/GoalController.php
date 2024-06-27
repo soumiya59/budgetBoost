@@ -47,6 +47,7 @@ class GoalController extends Controller
             'last_added_amount' => $request->current_amount,
             'completion_date' => $request->completion_date,
             'status' => 'in progress',
+            'currency' => $request->currency ,
         ]);
         $user->goals()->save($goal);
         return response()->json(['goal' => $goal], 201);
@@ -67,6 +68,7 @@ class GoalController extends Controller
         $goal->save();
         return response()->json(['goal' => $goal], 200);
     }
+    
     public function setGoalAsReached(Request $request, $id)
     {
         $user = Auth::user();
@@ -101,6 +103,7 @@ class GoalController extends Controller
             'last_added_amount' => $request->current_amount, 
             'completion_date' => $request->completion_date,
             'status' => 'in progress',
+            'currency' => $request->currency 
         ]);
 
         return response()->json(['goal' => $goal], 201);
@@ -131,6 +134,7 @@ class GoalController extends Controller
             'completion_date' => $request->completion_date,
             'last_added_amount' => $request->current_amount,
             'status' => $request->status ?? 'in progress',
+            'currency' => $request->currency 
         ]);
         return response()->json(['goal' => $goal], 200);
     }

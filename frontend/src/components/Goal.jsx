@@ -51,7 +51,7 @@ function Goal({ name, current_amount,target_amount, currency, idGoal, fetchGoals
             <div className='flex justify-between'>
               <div>
                 <h2 className="text-gray-900 text-lg title-font font-medium mb-2">{name}</h2>
-                <p className="leading-relaxed text-base">{current_amount} {currency}</p>
+                <p className="leading-relaxed text-base">{current_amount} <span className='uppercase'> {currency}</span></p>
               </div>
               <div className='self-center'>
                 {id == null &&

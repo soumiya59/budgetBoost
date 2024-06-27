@@ -3,10 +3,10 @@ function Account({type, balance, currency,id}) {
 
   const backgroundColor = type === 'saving' ? '#ddc1ee' :
                           type === 'creditcard' ? '#b5ebba' : 
-                          type === 'general' ? '#b5e2eb' : 
-                          type === 'cash' ? '#bab5eb' : 
+                          type === 'general' ? '#b5b7eb' : 
+                          type === 'cash' ? '#d0b5eb' : 
                           type === 'loan' ? '#b7cdeb' : 
-                          type === 'bank' ? '#bcd5ec' : 
+                          type === 'bank' ? '#bcdeec' : 
                           '#aca7cb';
   const imageSrc = type === 'saving' ? 'saving.png' : 
                    type === 'cash' ? 'cash.png' : 
