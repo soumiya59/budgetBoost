@@ -4,6 +4,7 @@ import RecordApi from '../services/api/RecordApi';
 import AddRecordModal from '../components/modals/AddRecordModal';
 import swal from 'sweetalert';
 import AccountApi from '../services/api/AccountApi';
+import { format, parseISO } from 'date-fns';
 
 function Records() {
   const [records, setRecords] = useState([]);
@@ -16,6 +17,7 @@ function Records() {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedRecordType, setSelectedRecordType] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const sortedRecords = [...records].sort((a, b) => {
     if (sortOption === "newest") {
@@ -26,10 +28,20 @@ function Records() {
   });
 
   const filteredRecords = sortedRecords.filter(record => {
-    return (!selectedAccount || record.account_id === selectedAccount) &&
+    const recordDate = parseISO(record.updated_at);
+    const isSameMonth = recordDate.getMonth() === selectedMonth.getMonth() && recordDate.getFullYear() === selectedMonth.getFullYear();
+    return isSameMonth &&
+           (!selectedAccount || record.account_id === selectedAccount) &&
            (!selectedCategory || record.category === selectedCategory) &&
            (!selectedRecordType || record.type === selectedRecordType);
   });
+
+  const groupedRecords = filteredRecords.reduce((acc, record) => {
+    const date = format(parseISO(record.updated_at), 'yyyy-MM-dd');
+    if (!acc[date]) acc[date] = [];
+    acc[date].push(record);
+    return acc;
+  }, {});
 
   const totalExpenses = filteredRecords
     .filter(record => record.type === "expense")
@@ -76,7 +88,6 @@ function Records() {
   const search = (e) => {
     const search = e.target.value;
     setSearchTerm(search);
-
     RecordApi.searchRecords(search)
       .then(({ data }) => {
         setSearchData(data.records);
@@ -101,6 +112,26 @@ function Records() {
 
   const handleRecordTypeSelection = (type) => {
     setSelectedRecordType(type);
+  };
+
+  const handleMonthChange = (e) => {
+    setSelectedMonth(new Date(e.target.value));
+  };
+
+  const handlePreviousMonth = () => {
+    setSelectedMonth(prev => {
+      const newMonth = new Date(prev);
+      newMonth.setMonth(prev.getMonth() - 1);
+      return newMonth;
+    });
+  };
+
+  const handleNextMonth = () => {
+    setSelectedMonth(prev => {
+      const newMonth = new Date(prev);
+      newMonth.setMonth(prev.getMonth() + 1);
+      return newMonth;
+    });
   };
 
   return (
@@ -130,7 +161,7 @@ function Records() {
               <option value="newest" className="option-padding">Newest</option>
               <option value="oldest" className="option-padding">Oldest</option>
             </select>
-            <p className='font-bold mt-5 mb-3'>Accounts</p>
+                        <p className='font-bold mt-5 mb-3'>Accounts</p>
             <button
               className={`flex ${selectedAccount === null ? ' text-blue1' : ''}`}
               onClick={() => handleAccountSelection(null)}
@@ -194,22 +225,41 @@ function Records() {
           </div>
           {/* records */}
           <div className='flex-1'>
-            <div className='text-slate-300 text-end '>
+            <div className='flex justify-between items-center text-slate-300 mb-5'>
+              <div className='flex justify-between'>
+              <button onClick={handlePreviousMonth}>
+                <img src="left.png" alt="" className='h-5 me-4' />
+              </button>
+              <input
+                type="month"
+                value={format(selectedMonth, 'yyyy-MM')}
+                onChange={handleMonthChange}
+                className="w-full border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+              />
+              <button onClick={handleNextMonth}>
+                <img src="right.png" alt="" className='h-5 ms-2' />
+              </button>
+              </div>
+            
               <p>- {totalExpenses} <span className='uppercase'>{accounts[0]?.currency}</span></p>
             </div>
 
             <div>
-              {(searchTerm ? searchData : filteredRecords).map((item) => (
-                <Record
-                  key={item.id}
-                  id={item.id}
-                  type={item.type}
-                  description={item.description}
-                  amount={item.amount}
-                  category={item.category}
-                  account_id={item.account_id}
-                  fetchRecords={fetchRecords}
-                />
+              {Object.entries(groupedRecords).map(([date, records]) => (
+                <div key={date}>
+                  {records.map((item) => (
+                    <Record
+                      key={item.id}
+                      id={item.id}
+                      type={item.type}
+                      description={item.description}
+                      amount={item.amount}
+                      category={item.category}
+                      account_id={item.account_id}
+                      fetchRecords={fetchRecords}
+                    />
+                  ))}
+                </div>
               ))}
             </div>
           </div>
