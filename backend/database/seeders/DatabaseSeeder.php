@@ -58,6 +58,7 @@ class DatabaseSeeder extends Seeder
             'current_amount' => 100,
             'last_added_amount' => 10,
             'completion_date' => '2024-10-10',
+            'status' => 'in progress',
         ]);
     }
 }

@@ -73,12 +73,13 @@ Route::delete('/transfers/{id}', [TransferController::class, 'destroy']);
 Route::get('/goals', [GoalController::class, 'index']);
 Route::get('/mygoals', [GoalController::class, 'getUserGoals']);
 Route::post('/addgoal', [GoalController::class, 'addGoalToUser']);
-Route::post('/addamount', [GoalController::class, 'addAmountToGoal']);
+Route::put('/addamount', [GoalController::class, 'addAmountToGoal']);
 route::delete('/mygoals/{id}', [GoalController::class, 'deleteGoalById']);
 Route::post('/goals', [GoalController::class, 'store']);
 Route::get('/goals/{id}', [GoalController::class, 'show']);
 Route::put('/goals/{id}', [GoalController::class, 'update']);
 Route::delete('/goals/{id}', [GoalController::class, 'destroy']);
+Route::put('/setgoalasreached/{id}', [GoalController::class, 'setGoalAsReached']);
 
 
 Route::get('/', function () {

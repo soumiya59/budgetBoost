@@ -46,12 +46,13 @@ class GoalController extends Controller
             'current_amount' => $request->current_amount,
             'last_added_amount' => $request->current_amount,
             'completion_date' => $request->completion_date,
+            'status' => 'in progress',
         ]);
         $user->goals()->save($goal);
         return response()->json(['goal' => $goal], 201);
     }
     
-    public function addAmountToGoal(){
+    public function addAmountToGoal(Request $request){
         $validator = Validator::make($request->all(), [
             'amount' => 'required|numeric|min:0',
         ]);
@@ -63,6 +64,16 @@ class GoalController extends Controller
         $goal = $user->goals()->find($request->goalId);
         $goal->current_amount += $request->amount;
         $goal->last_added_amount = $request->amount;
+        $goal->save();
+        return response()->json(['goal' => $goal], 200);
+    }
+    public function setGoalAsReached(Request $request, $id)
+    {
+        $user = Auth::user();
+        $goal = $user->goals()->find($id);
+        $goal->current_amount = $goal->target_amount;
+        $goal->last_added_amount = $goal->target_amount;
+        $goal->status = 'completed';
         $goal->save();
         return response()->json(['goal' => $goal], 200);
     }
@@ -89,6 +100,7 @@ class GoalController extends Controller
             'current_amount' => $request->current_amount,
             'last_added_amount' => $request->current_amount, 
             'completion_date' => $request->completion_date,
+            'status' => 'in progress',
         ]);
 
         return response()->json(['goal' => $goal], 201);
@@ -118,6 +130,7 @@ class GoalController extends Controller
             'current_amount' => $request->current_amount,
             'completion_date' => $request->completion_date,
             'last_added_amount' => $request->current_amount,
+            'status' => $request->status ?? 'in progress',
         ]);
         return response()->json(['goal' => $goal], 200);
     }

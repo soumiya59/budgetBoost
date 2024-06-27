@@ -46,14 +46,14 @@ function Goals() {
             <p className="text-xl text-slate-400">How much i saved ?</p>
           </div>
           <div>
-            <button className="bg-slate-500 text-white px-4 py-2 rounded-md" onClick={handleAddGoal}>Add Goal</button>
+            <button className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded" onClick={handleAddGoal}>Add Goal</button>
           </div>
         </div>
         
         <div>
             {
             goals.length>0? goals.map((item) => (
-              <Goal key={item.id} name={item.name} current_amount={item.current_amount} currency={item.currency} idGoal={item.id} fetchGoals={fetchGoals}/>
+              <Goal key={item.id} name={item.name} current_amount={item.current_amount} target_amount={item.target_amount} currency={item.currency} idGoal={item.id} fetchGoals={fetchGoals}/>
             )) 
             : 
             <div className="flex justify-center">

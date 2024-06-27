@@ -19,6 +19,9 @@ const GoalApi = {
     addamount : async (goalId,amount) => {
         return await axiosClient.put('/addamount',{goalId,amount})
     },
+    setGoalAsReached : async (id) => {
+        return await axiosClient.put('/setgoalasreached/'+id)
+    }
 
 }
 

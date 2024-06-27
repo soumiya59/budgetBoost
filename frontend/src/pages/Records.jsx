@@ -20,7 +20,6 @@ function Records() {
 
   useEffect(() => {
     fetchRecords();
-    // AccountApi.getAccounts().then(({data})=> setAccounts(data.accounts))
     AccountApi.getAccounts().then(({data})=>{
       setAccounts(data.accounts)
     }).catch((err)=>{
