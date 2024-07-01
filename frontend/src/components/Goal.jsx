@@ -6,6 +6,7 @@ import EditGoalModal from '../components/modals/EditGoalModal';
 import swal from 'sweetalert';
 
 function Goal({ name, current_amount,target_amount, currency, idGoal, fetchGoals }) {
+
   const { id } = useParams();
   const [editGoalModal, setEditGoalModal] = useState(false);
   const progressPercentage = (current_amount / target_amount) * 100;

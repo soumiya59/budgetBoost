@@ -3,8 +3,10 @@ import Goal from '../components/Goal';
 import GoalApi from '../services/api/GoalApi';
 import AddGoalModal from '../components/modals/AddGoalModal';
 import swal from 'sweetalert';
+import { useTranslation } from 'next-i18next';
 
 function Goals() {
+  const { t } = useTranslation();
 
   const [goals, setGoals] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -42,11 +44,11 @@ function Goals() {
 
         <div className='flex justify-between pt-10 mb-8'>
           <div>
-            <h1 className="text-2xl text-light-grey">Goals</h1>
-            <p className="text-xl text-slate-400">How much i saved ?</p>
+            <h1 className="text-2xl text-light-grey">{t('Goals')}</h1>
+            <p className="text-xl text-slate-400">{t('How much i saved ?')}</p>
           </div>
           <div>
-            <button className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded" onClick={handleAddGoal}>Add Goal</button>
+            <button className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded" onClick={handleAddGoal}>{t('Add Goal')}</button>
           </div>
         </div>
         
@@ -57,7 +59,7 @@ function Goals() {
             )) 
             : 
             <div className="flex justify-center">
-              <p className="text-xl text-center text-slate-400 mb-10">No Goals Found</p>
+              <p className="text-xl text-center text-slate-400 mb-10">{t('No Goals Found')}</p>
             </div>
             }
           </div>

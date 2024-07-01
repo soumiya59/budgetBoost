@@ -3,10 +3,13 @@ import Account from '../components/Account';
 import AccountApi from '../services/api/AccountApi';
 import AddAccountModal from '../components/modals/AddAccountModal';
 import swal from 'sweetalert';
+import { useTranslation } from 'next-i18next';
 
 
 function Accounts() {
+  const { t } = useTranslation();
   const [accounts, setAccounts] = useState([]);
+  console.log("🚀 ~ Accounts ~ accounts:", accounts)
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -43,7 +46,7 @@ function Accounts() {
             onClick={handleAddAccount}
             className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded flex ms-auto me-5 w-36"
           >
-            Add Account
+            {t('Add Account')}
           </button>
           <br />
           <div>

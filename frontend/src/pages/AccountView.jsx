@@ -5,8 +5,10 @@ import AccountApi from '../services/api/AccountApi';
 import EditAccountModal from '../components/modals/EditAccountModal';
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
+import { useTranslation } from 'next-i18next';
 
 function AccountView() {
+  const { t } = useTranslation();
   const [account, setAccount] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate()
@@ -59,18 +61,18 @@ function AccountView() {
               onClick={edit}
               className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded w-36 me-5"
             >
-              edit
+              {t('Edit')}
             </button>
             <button
               onClick={deleteAcc}
               className="bg-mat-green hover:bg-bold-green text-beig-light font-bold py-2 px-4 rounded w-36 me-5"
             >
-              delete
+              {t('Delete')}
             </button>
           </div>
           <br />
           <div>
-            <Account key={account.id} type={account.name} balance={account.balance} currency={account.currency} id={account.id}/>
+            <Account key={account.id} name={account.name} balance={account.balance} currency={account.currency} id={account.id}/>
           </div>
         </div>
       {showModal &&  (

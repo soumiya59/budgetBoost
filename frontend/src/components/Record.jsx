@@ -5,8 +5,10 @@ import RecordApi from '../services/api/RecordApi';
 import AccountApi from '../services/api/AccountApi';
 import EditRecordModal from '../components/modals/EditRecordModal';
 import swal from 'sweetalert';
+import { useTranslation } from 'next-i18next';
 
 function Record({type, amount,  id, description, category, account_id ,fetchRecords}) {
+  const { t } = useTranslation();
   
   const [account, setAccount] = useState({});
   const [viewRecord, setViewRecord] = useState(false);
@@ -65,15 +67,15 @@ function Record({type, amount,  id, description, category, account_id ,fetchReco
     <button onClick={showRecord} style={{ backgroundColor }} className=" p-4 rounded flex flex-col md:flex-row my-4 items-center text-left w-full ">
       <div className='flex items-center flex-none w-36 '>
         <img src={`/accounts/${imageSrc}`} alt="recordLogo" className=" w-10 me-10" />
-        <p>{category}</p>
+        <p>{t(category)}</p>
       </div>
 
       <div className='shrink w-28 mx-10 text-center'>
-        <p>{account?.name}</p>
+        <p>{t(account?.name)}</p>
       </div>
 
       <div className=' flex-auto '>
-        {description !== ''  || description !== null ? <p>{description}</p> : ''}
+        {description !== ''  || description !== null ? <p>{t(description)}</p> : ''}
       </div>
 
       <div className="ms-5 text-gray-800 text-end">

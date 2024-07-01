@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import AccountApi from '../../services/api/AccountApi'; 
+import { useTranslation } from 'next-i18next';
 
 const formSchema = z.object({
   name: z.string().min(2).max(30),
@@ -17,6 +18,7 @@ const formSchema = z.object({
 });
 
 function EditAccountModal({ onClose , onAccountEdited}) {
+    const { t } = useTranslation();
     const [account, setAccount] = useState([]);
     const { id } = useParams();
 
@@ -62,7 +64,7 @@ function EditAccountModal({ onClose , onAccountEdited}) {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Type</FormLabel>
+                                <FormLabel>{t('Type')}</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
@@ -70,12 +72,12 @@ function EditAccountModal({ onClose , onAccountEdited}) {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        <SelectItem value="general">General</SelectItem>
-                                        <SelectItem value="cash">Cash</SelectItem>
-                                        <SelectItem value="saving">Saving</SelectItem>
-                                        <SelectItem value="creditcard">Credit Card</SelectItem>
-                                        <SelectItem value="loan">Loan</SelectItem>
-                                        <SelectItem value="bank">Bank</SelectItem>
+                                        <SelectItem value="general">{t('general')}</SelectItem>
+                                        <SelectItem value="cash">{t('cash')}</SelectItem>
+                                        <SelectItem value="saving">{t('saving')}</SelectItem>
+                                        <SelectItem value="creditcard">{t('credit card')}</SelectItem>
+                                        <SelectItem value="loan">{t('loan')}</SelectItem>
+                                        <SelectItem value="bank">{t('bank')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -87,7 +89,7 @@ function EditAccountModal({ onClose , onAccountEdited}) {
                         name="balance"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Initial Amount</FormLabel>
+                                <FormLabel>{t('Initial Balance')}</FormLabel>
                                 <FormControl>
                                     <Input placeholder="0" {...field} type='number' />
                                 </FormControl>
@@ -100,7 +102,7 @@ function EditAccountModal({ onClose , onAccountEdited}) {
                         name="currency"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Currency</FormLabel>
+                                <FormLabel>{t('Currency')}</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                         <SelectTrigger>

@@ -5,8 +5,10 @@ import AddRecordModal from '../components/modals/AddRecordModal';
 import swal from 'sweetalert';
 import AccountApi from '../services/api/AccountApi';
 import { format, parseISO } from 'date-fns';
+import { useTranslation } from 'next-i18next';
 
 function Records() {
+  const { t } = useTranslation();
   const [records, setRecords] = useState([]);
   const [accounts, setAccounts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -36,7 +38,7 @@ function Records() {
            (!selectedRecordType || record.type === selectedRecordType);
   });
 
-  const groupedRecords = filteredRecords.reduce((acc, record) => {
+  const groupedRecords = (searchTerm ? searchData : filteredRecords).reduce((acc, record) => {
     const date = format(parseISO(record.updated_at), 'yyyy-MM-dd');
     if (!acc[date]) acc[date] = [];
     acc[date].push(record);
@@ -136,139 +138,138 @@ function Records() {
 
   return (
     <>
-      <div className="max-w-screen-xl mx-auto p-6 pt-10">
-        <div className='flex mt-8 h-screen '>
-          {/* sidebar */}
-          <div className='flex-none text-slate-300 border-2 rounded-lg border-slate-600 p-5 mr-5'>
+  <div className="max-w-screen-xl mx-auto p-6 pt-10">
+    <div className='flex mt-8 h-screen '>
+      {/* sidebar */}
+      <div className='flex-none text-slate-300 border-2 rounded-lg border-slate-600 p-5 mr-5'>
+        <button
+          onClick={handleAddRecord}
+          className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded w-full"
+        > {t('Add Record')} </button>
+        <br />
+        <input
+          type="text"
+          className="w-full h-10 border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent my-5"
+          placeholder={t("Search")}
+          value={searchTerm}
+          onChange={search}
+        />
+        <p className='font-bold mb-2'>{t('Sort By')}</p>
+        <select
+          className="w-full h-10 border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+          value={sortOption}
+          onChange={handleSortChange}
+        >
+          <option value="newest" className="option-padding">{t('Newest')}</option>
+          <option value="oldest" className="option-padding">{t('Oldest')}</option>
+        </select>
+        <p className='font-bold mt-5 mb-3'>{t('Accounts')}</p>
+        <button
+          className={`flex ${selectedAccount === null ? ' text-blue1' : ''}`}
+          onClick={() => handleAccountSelection(null)}
+        >
+          <img src={` ${selectedAccount === null ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+          {t('All Accounts')}
+        </button>
+        {accounts.map((account) => (
+          <p key={account.id}>
             <button
-              onClick={handleAddRecord}
-              className="bg-blue1 hover:bg-light-blue1 text-beig-light font-bold py-2 px-4 rounded w-full"
-            > Add Record </button>
-            <br />
+              className={`flex ${selectedAccount === account.id ? 'text-blue1' : ''}`}
+              onClick={() => handleAccountSelection(account.id)}
+            >
+              <img src={` ${selectedAccount === account.id ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+              {t(account.name)}
+            </button>
+          </p>
+        ))}
+        <p className='font-bold mt-5 mb-3'>{t('Categories')}</p>
+        <button
+          className={`flex ${selectedCategory === null ? ' text-blue1' : ''}`}
+          onClick={() => handleCategorySelection(null)}
+        >
+          <img src={` ${selectedCategory === null ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+          {t('All Categories')}
+        </button>
+        {categories.map((category) => (
+          <p key={category.id}>
+            <button
+              className={`flex ${selectedCategory === category.type ? 'text-blue1' : ''}`}
+              onClick={() => handleCategorySelection(category.type)}
+            >
+              <img src={` ${selectedCategory === category.type ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+              {t(category.type)}
+            </button>
+          </p>
+        ))}
+        <p className='font-bold mt-5 mb-3'>{t('Record types')}</p>
+        <button
+          className={`flex ${selectedRecordType === null ? ' text-blue1' : ''}`}
+          onClick={() => handleRecordTypeSelection(null)}
+        >
+          <img src={` ${selectedRecordType === null ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+          {t('All Record Types')}
+        </button>
+        <button
+          className={`flex ${selectedRecordType === 'income' ? ' text-blue1' : ''}`}
+          onClick={() => handleRecordTypeSelection('income')}
+        >
+          <img src={` ${selectedRecordType === 'income' ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+          {t('Income')}
+        </button>
+        <button
+          className={`flex ${selectedRecordType === 'expense' ? 'text-blue1' : ''}`}
+          onClick={() => handleRecordTypeSelection('expense')}
+        >
+          <img src={` ${selectedRecordType === 'expense' ? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
+          {t('Expense')}
+        </button>
+      </div>
+      {/* records */}
+      <div className='flex-1'>
+        <div className='flex justify-between items-center text-slate-300 mb-5'>
+          <div className='flex justify-between'>
+            <button onClick={handlePreviousMonth}>
+              <img src="left.png" alt="" className='h-5 me-4' />
+            </button>
             <input
-              type="text"
-              className="w-full h-10 border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent my-5"
-              placeholder="Search"
-              value={searchTerm}
-              onChange={search}
+              type="month"
+              value={format(selectedMonth, 'yyyy-MM')}
+              onChange={handleMonthChange}
+              className="w-full border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
             />
-            <p className='font-bold mb-2'>Sort By</p>
-            <select
-              className="w-full h-10 border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-              value={sortOption}
-              onChange={handleSortChange}
-            >
-              <option value="newest" className="option-padding">Newest</option>
-              <option value="oldest" className="option-padding">Oldest</option>
-            </select>
-                        <p className='font-bold mt-5 mb-3'>Accounts</p>
-            <button
-              className={`flex ${selectedAccount === null ? ' text-blue1' : ''}`}
-              onClick={() => handleAccountSelection(null)}
-            >
-              <img src={` ${selectedAccount===null? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-              All Accounts
-            </button>
-            {accounts.map((account) => (
-              <p key={account.id}>
-                <button
-                  className={`flex ${selectedAccount === account.id ? 'text-blue1' : ''}`}
-                  onClick={() => handleAccountSelection(account.id)}
-                >
-                  <img src={` ${selectedAccount===account.id? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-                  {account.name}
-                </button>
-              </p>
-            ))}
-            <p className='font-bold mt-5 mb-3'>Categories</p>
-            <button
-              className={`flex ${selectedCategory === null ? ' text-blue1' : ''}`}
-              onClick={() => handleCategorySelection(null)}
-            >
-              <img src={` ${selectedCategory===null? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-              All Categories
-            </button>
-            {categories.map((category) => (
-              <p key={category.id}>
-                <button
-                  className={`flex ${selectedCategory === category.type ? 'text-blue1' : ''}`}
-                  onClick={() => handleCategorySelection(category.type)}
-                >
-                  <img src={` ${selectedCategory===category.type? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-                  {category.type}
-                </button>
-              </p>
-            ))}
-            <p className='font-bold mt-5 mb-3'>Record types</p>
-            <button
-              className={`flex ${selectedRecordType === null ? ' text-blue1' : ''}`}
-              onClick={() => handleRecordTypeSelection(null)}
-            >
-              <img src={` ${selectedRecordType===null? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-              All record types
-            </button>
-            <button
-              className={`flex ${selectedRecordType === 'income' ? ' text-blue1' : ''}`}
-              onClick={() => handleRecordTypeSelection('income')}
-            >
-              <img src={` ${selectedRecordType==='income'? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-
-              Income
-            </button>
-            <button
-              className={`flex ${selectedRecordType === 'expense' ? 'text-blue1' : ''}`}
-              onClick={() => handleRecordTypeSelection('expense')}
-            >
-              <img src={` ${selectedRecordType==='expense'? 'eye1.png' : 'eye2.png'}`} alt="" className='me-2 w-4 my-auto' />
-              Expense
+            <button onClick={handleNextMonth}>
+              <img src="right.png" alt="" className='h-5 ms-2' />
             </button>
           </div>
-          {/* records */}
-          <div className='flex-1'>
-            <div className='flex justify-between items-center text-slate-300 mb-5'>
-              <div className='flex justify-between'>
-              <button onClick={handlePreviousMonth}>
-                <img src="left.png" alt="" className='h-5 me-4' />
-              </button>
-              <input
-                type="month"
-                value={format(selectedMonth, 'yyyy-MM')}
-                onChange={handleMonthChange}
-                className="w-full border border-gray-400 bg-dark-blue1 rounded text-slate-300 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-              />
-              <button onClick={handleNextMonth}>
-                <img src="right.png" alt="" className='h-5 ms-2' />
-              </button>
-              </div>
-            
-              <p>- {totalExpenses} <span className='uppercase'>{accounts[0]?.currency}</span></p>
-            </div>
+          <p>- {totalExpenses} <span className='uppercase'>{accounts[0]?.currency}</span></p>
+        </div>
 
-            <div>
-              {Object.entries(groupedRecords).map(([date, records]) => (
-                <div key={date}>
-                  {records.map((item) => (
-                    <Record
-                      key={item.id}
-                      id={item.id}
-                      type={item.type}
-                      description={item.description}
-                      amount={item.amount}
-                      category={item.category}
-                      account_id={item.account_id}
-                      fetchRecords={fetchRecords}
-                    />
-                  ))}
-                </div>
+        <div>
+          {Object.entries(groupedRecords).map(([date, records]) => (
+            <div key={date}>
+              <h2 className='text-slate-300'>{format(parseISO(date), 'MMMM d, yyyy')}</h2>
+              {records.map((item) => (
+                <Record
+                  key={item.id}
+                  id={item.id}
+                  type={item.type}
+                  description={item.description}
+                  amount={item.amount}
+                  category={item.category}
+                  account_id={item.account_id}
+                  fetchRecords={fetchRecords}
+                />
               ))}
             </div>
-          </div>
+          ))}
         </div>
       </div>
-      {showModal && (
-        <AddRecordModal onClose={handleCloseModal} onExpenseAdded={handleExpenseAdded} setRecords={setRecords} fetchRecords={fetchRecords} />
-      )}
-    </>
+    </div>
+  </div>
+  {showModal && (
+    <AddRecordModal onClose={handleCloseModal} onExpenseAdded={handleExpenseAdded} setRecords={setRecords} fetchRecords={fetchRecords} />
+  )}
+</>
   );
 }
 
