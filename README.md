@@ -16,23 +16,23 @@ A financial management web application designed to help users effectively manage
 
 #### Dashboard
 
-![screenshot](./public/screenshots/dashboard.png)
+![screenshot](./frontend/public/screenshots/dashboard.png)
 
 #### Accounts
 
-![screenshot](./public/screenshots/accounts.png)
+![screenshot](./frontend/public/screenshots/accounts.png)
 
 #### Records
 
-![screenshot](./public/screenshots/records.png)
+![screenshot](./frontend/public/screenshots/records.png)
 
 #### Goals
 
-![screenshot](./public/screenshots/goals.png)
+![screenshot](./frontend/public/screenshots/goals.png)
 
 #### pricing
 
-![screenshot](./public/screenshots/pricing.png)
+![screenshot](./frontend/public/screenshots/pricing.png)
 
 ## Getting Started 
 1. Make sure you have [composer](https://getcomposer.org/download/) installed.
