@@ -1,4 +1,29 @@
-## Prerequisite
+## 📌 About The Project
+
+A financial management web application designed to help users effectively manage their accounts, track expenses and icomes, and set financial goals.
+
+### Built With
+* ![laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+* ![react](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+* ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+* ![mysql](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)
+
+# Screenshots
+
+Login
+![screenshot](./public/screenshots/login.png)
+Dashboard
+![screenshot](./public/screenshots/dashboard.png)
+Accounts
+![screenshot](./public/screenshots/accounts.png)
+Records
+![screenshot](./public/screenshots/records.png)
+Goals
+![screenshot](./public/screenshots/goals.png)
+pricing
+![screenshot](./public/screenshots/pricing.png)
+
+## Getting Started 
 1. Make sure you have [composer](https://getcomposer.org/download/) installed.
 2. Make sure you have latest stable version of [node](https://nodejs.org/en/download/) installed.
 

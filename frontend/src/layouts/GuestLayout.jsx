@@ -17,7 +17,6 @@ function GuestLayout() {
              <main>
                 <Outlet/>
              </main>
-            {/* <footer>footer</footer> */}
         </div>
     );
 }

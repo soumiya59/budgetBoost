@@ -64,7 +64,7 @@ function Dashboard() {
         });
 
         // Calculate total expenses for the current month and get the currency
-        const totalExpenses = currentMonthRecords.reduce((acc, record) => acc + record.amount, 0);
+        const totalExpenses = currentMonthRecords.reduce((acc, record) => parseFloat(acc) + parseFloat(record.amount), 0);
         setCurrentMonthExpenses(totalExpenses);
 
         // Generate chart data for current month expenses

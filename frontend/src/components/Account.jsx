@@ -3,10 +3,10 @@
 import { useTranslation } from 'next-i18next';
 function Account({name, balance, currency,id}) {
   const { t } = useTranslation();
-  const backgroundColor = name === 'saving' ? '#ddc1ee' :
+  const backgroundColor = name === 'saving' ? '#d3bbe3' :
                           name === 'creditcard' ? '#b5ebba' : 
                           name === 'general' ? '#b5b7eb' : 
-                          name === 'cash' ? '#d0b5eb' : 
+                          name === 'cash' ? '#b5c9eb' : 
                           name === 'loan' ? '#b7cdeb' : 
                           name === 'bank' ? '#bcdeec' : 
                           '#aca7cb';
