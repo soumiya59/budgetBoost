@@ -12,24 +12,19 @@ A financial management web application designed to help users effectively manage
 
 #### Login
 
-![screenshot](./public/screenshots/login.png)
-
+![screenshot](./frontend/public/screenshots/login.png)
 #### Dashboard
 
 ![screenshot](./frontend/public/screenshots/dashboard.png)
-
 #### Accounts
 
 ![screenshot](./frontend/public/screenshots/accounts.png)
-
 #### Records
 
 ![screenshot](./frontend/public/screenshots/records.png)
-
 #### Goals
 
 ![screenshot](./frontend/public/screenshots/goals.png)
-
 #### pricing
 
 ![screenshot](./frontend/public/screenshots/pricing.png)
