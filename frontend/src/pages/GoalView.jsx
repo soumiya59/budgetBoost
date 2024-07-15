@@ -13,6 +13,7 @@ function GoalView() {
   const navigate = useNavigate()
   const { id } = useParams();
   const amountNeeded = goal.target_amount - goal.current_amount;
+  const progressPercentage = (goal.current_amount / goal.target_amount) * 100;
 
   useEffect(() => {
     fetchGoal();
@@ -77,7 +78,7 @@ function GoalView() {
           </div>
 
           <div className='flex justify-center text-indigo-600 mt-14'>
-            <div className="radial-progress" style={{ "--value": "70", "--size": "16rem", "--thickness": "2rem" }} role="progressbar">70%</div>
+            <div className="radial-progress" style={{ "--value": progressPercentage, "--size": "16rem", "--thickness": "2rem" }} role="progressbar">{parseInt(progressPercentage)}%</div>
             <div className='ms-14 self-center text-slate-400 text-lg '>
               <p className='py-3 '>{t('Current Amount')} : <span className=' text-slate-300'>{goal.current_amount} <span className='uppercase'>{goal.currency}</span></span> </p>
               <p className='py-3 '>{t('Target Amount')} : <span className=' text-slate-300'>{goal.target_amount} <span className='uppercase'>{goal.currency}</span></span> </p>
