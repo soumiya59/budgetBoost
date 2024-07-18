@@ -68,17 +68,30 @@ function Dashboard() {
         setCurrentMonthExpenses(totalExpenses);
 
         // Generate chart data for current month expenses
-        const categories = currentMonthRecords.map(record => record.category);
+        // const categorySet = new Set(currentMonthRecords.map(record => record.category));
+        // const categories = Array.from(categorySet);
+        const categoryData = currentMonthRecords.reduce((acc, record) => {
+      if (!acc[record.category]) {
+        acc[record.category] = 0;
+      }
+      acc[record.category] += parseFloat(record.amount);
+      return acc;
+    }, {});
+
+       const categories = Object.keys(categoryData);
+       const categoryValues = Object.values(categoryData);
+        
         const chartData = {
           labels: categories,
           datasets: [
             {
               label: 'Expenses',
-              data: categories.map(category =>
-                currentMonthRecords
-                  .filter(record => record.category === category)
-                  .reduce((acc, record) => acc + record.amount, 0)
-              ),
+              data: categoryValues,
+              // data: categories.map(category =>
+              //   currentMonthRecords
+              //     .filter(record => record.category === category)
+              //     .reduce((acc, record) => acc + record.amount, 0)
+              // ),
               backgroundColor: [
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(255, 99, 132, 0.2)',
