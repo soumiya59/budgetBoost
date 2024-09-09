@@ -14,6 +14,7 @@ function Dashboard() {
   const [currentMonthExpenses, setCurrentMonthExpenses] = useState(0);
   const [currentMonthCurrency, setCurrentMonthCurrency] = useState('');
   const [currentMonthChartData, setCurrentMonthChartData] = useState({ labels: [], datasets: [] });
+  const [currentMonthChartDataPie, setCurrentMonthChartDataPie] = useState({ labels: [], datasets: [] });
 
   const lastRecords = records.slice(-5);
   lastRecords.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
@@ -34,24 +35,23 @@ function Dashboard() {
     },
   };
 
-  useEffect(() => {
-    AccountApi.getAccounts()
-      .then(({ data }) => {
-        setAccounts(data.accounts);
-        setCurrentMonthCurrency(data.accounts[0]?.currency);
-        const total = data.accounts.reduce((acc, account) => acc + parseFloat(account.balance), 0);
-        setTotalBalance(total);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+useEffect(() => {
+  AccountApi.getAccounts()
+    .then(({ data }) => {
+      setAccounts(data.accounts);
+      setCurrentMonthCurrency(data.accounts[0]?.currency);
+      const total = data.accounts.reduce((acc, account) => acc + parseFloat(account.balance), 0);
+      setTotalBalance(total);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
-    RecordApi.getAllMyRecords()
-      .then(({ data }) => {
-        setRecords(data.records);
-
-        // Filter records for the current month
-        const currentMonth = new Date().getMonth();
+  RecordApi.getAllMyRecords()
+    .then(({ data }) => {
+      setRecords(data.records);
+      // Filter records for the current month
+      const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();
 
         const currentMonthRecords = data.records.filter(record => {
@@ -62,15 +62,11 @@ function Dashboard() {
             record.type === 'expense'
           );
         });
-
         // Calculate total expenses for the current month and get the currency
         const totalExpenses = currentMonthRecords.reduce((acc, record) => parseFloat(acc) + parseFloat(record.amount), 0);
         setCurrentMonthExpenses(totalExpenses);
 
-        // Generate chart data for current month expenses
-        // const categorySet = new Set(currentMonthRecords.map(record => record.category));
-        // const categories = Array.from(categorySet);
-        const categoryData = currentMonthRecords.reduce((acc, record) => {
+      const categoryData = currentMonthRecords.reduce((acc, record) => {
       if (!acc[record.category]) {
         acc[record.category] = 0;
       }
@@ -80,8 +76,7 @@ function Dashboard() {
 
        const categories = Object.keys(categoryData);
        const categoryValues = Object.values(categoryData);
-        
-        const chartData = {
+      const chartDataPie = {
           labels: categories,
           datasets: [
             {
@@ -113,12 +108,43 @@ function Dashboard() {
             },
           ],
         };
-        setCurrentMonthChartData(chartData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+        setCurrentMonthChartDataPie(chartDataPie);
+
+      // Process records by date for balance trends
+            const balanceDataByDate = data.records.reduce((acc, record) => {
+        const recordDateObj = new Date(record.updated_at);
+        const formattedDate = `${(recordDateObj.getMonth() + 1).toString().padStart(2, '0')}-${recordDateObj.getDate().toString().padStart(2, '0')}`; // Format as MM-DD
+        if (!acc[formattedDate]) {
+          acc[formattedDate] = 0;
+        }
+        acc[formattedDate] += parseFloat(record.amount) * (record.type === 'income' ? 1 : -1);
+        return acc;
+      }, {});
+
+      const dates = Object.keys(balanceDataByDate).sort(); // Sorted date labels
+      const balances = dates.map(date => balanceDataByDate[date]);
+
+      // Generate chart data for balance trends by date (MM-DD format)
+      const chartData = {
+        labels: dates,
+        datasets: [
+          {
+            label: 'Balance Trends',
+            data: balances,
+            fill: false,
+            borderColor: 'rgba(153, 102, 255, 1)',
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderWidth: 2,
+          },
+        ],
+      };
+      setCurrentMonthChartData(chartData);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}, []);
+
 
   return (
     <div className="max-w-screen-xl h-screen mx-auto px-6 ">
@@ -181,7 +207,7 @@ function Dashboard() {
           </div>
           <p><span className='text-sm uppercase'>{t('This month')} :</span> <span className='uppercase text-xl'> -{currentMonthCurrency} {currentMonthExpenses}</span> </p>
           <div className="mx-auto my-auto">
-            <PieChart chartData={currentMonthChartData} options={options} />
+            <PieChart chartData={currentMonthChartDataPie} options={options} />
           </div>
         </div>
       </div>
